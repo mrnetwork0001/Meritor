@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@virtuals-protocol/acp-cli": "^1.0.35"
+  }
+}
