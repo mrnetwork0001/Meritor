@@ -1,0 +1,508 @@
+<title>Meritor Credit Desk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  :root{
+    color-scheme: dark;
+    --bg:#0b111a; --panel:#121b28; --panel-2:#0e1621; --inset:#0a1019;
+    --line:#20304400; --line:#213043; --line-2:#31465f;
+    --ink:#e9eff7; --mid:#a4b4c8; --dim:#65768c;
+    --accent:#4f8dfb; --accent-soft:rgba(79,141,251,.13); --accent-line:rgba(79,141,251,.4);
+    --good:#37c383; --good-soft:rgba(55,195,131,.12);
+    --bad:#f0576e; --bad-soft:rgba(240,87,110,.12);
+    --warn:#e3b23f;
+    --t-unknown:#6c7a8c; --t-bronze:#c47a45; --t-silver:#aab6c2; --t-gold:#e3b73f; --t-platinum:#63dbe6;
+    --sans:"IBM Plex Sans",system-ui,-apple-system,sans-serif;
+    --disp:"Archivo",var(--sans);
+    --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+    --r:14px; --r-sm:9px;
+  }
+  *{box-sizing:border-box}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.5;
+    -webkit-font-smoothing:antialiased;letter-spacing:.005em}
+  a{color:inherit}
+  .wrap{max-width:1200px;margin:0 auto;padding:28px 22px 60px}
+  .mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+
+  /* ---- header ---- */
+  header{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:wrap;
+    padding-bottom:20px;border-bottom:1px solid var(--line)}
+  .brand h1{font-family:var(--disp);font-weight:800;font-size:30px;letter-spacing:-.02em;margin:0;
+    display:flex;align-items:center;gap:11px}
+  .shield{width:26px;height:30px;flex:none}
+  .brand p{margin:6px 0 0;color:var(--mid);font-size:14px;max-width:44ch}
+  .chainchip{display:inline-flex;align-items:center;gap:7px;margin-top:10px;font-family:var(--mono);
+    font-size:11.5px;color:var(--mid);background:var(--panel);border:1px solid var(--line);
+    padding:5px 10px;border-radius:999px}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--good);box-shadow:0 0 0 3px var(--good-soft)}
+
+  /* ---- memory master switch ---- */
+  .master{background:var(--panel);border:1px solid var(--line-2);border-radius:var(--r);
+    padding:14px 16px;min-width:270px}
+  .master .lab{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:11px}
+  .master .lab .k{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+  .master .state{font-family:var(--disp);font-weight:700;font-size:14px;letter-spacing:.02em}
+  .state.on{color:var(--good)} .state.off{color:var(--bad)}
+  .toggle{display:flex;width:100%;background:var(--inset);border:1px solid var(--line);border-radius:10px;padding:4px;gap:4px}
+  .toggle button{flex:1;font-family:var(--sans);font-weight:600;font-size:12.5px;color:var(--mid);
+    background:transparent;border:0;padding:8px 6px;border-radius:7px;cursor:pointer;transition:.18s}
+  .toggle button[aria-pressed="true"]{background:var(--panel-2);color:var(--ink);
+    box-shadow:inset 0 0 0 1px var(--line-2)}
+  .toggle button.danger[aria-pressed="true"]{color:var(--bad);box-shadow:inset 0 0 0 1px rgba(240,87,110,.5)}
+  .master .hint{margin:10px 0 0;font-size:11.5px;color:var(--dim);line-height:1.45}
+
+  /* ---- alert banner ---- */
+  .banner{display:flex;align-items:center;gap:12px;margin:18px 0 22px;padding:13px 16px;border-radius:var(--r);
+    border:1px solid var(--line);background:var(--panel);font-size:13.5px;color:var(--mid);transition:.2s}
+  .banner.alert{border-color:rgba(240,87,110,.45);background:var(--bad-soft);color:#ffd7dd}
+  .banner .bico{font-family:var(--mono);font-weight:600;font-size:12px;padding:3px 8px;border-radius:6px;
+    border:1px solid var(--line-2);color:var(--mid);white-space:nowrap}
+  .banner.alert .bico{border-color:rgba(240,87,110,.5);color:#ffb3bd;background:rgba(240,87,110,.12)}
+  .banner strong{color:var(--ink);font-weight:600}
+  .banner.alert strong{color:#fff}
+
+  /* ---- main grid ---- */
+  .grid{display:grid;grid-template-columns:288px minmax(0,1fr) 320px;gap:16px;align-items:start}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px}
+  .panel > .head{display:flex;align-items:center;justify-content:space-between;margin:-2px 0 13px}
+  .panel > .head h2{font-family:var(--disp);font-weight:700;font-size:13px;letter-spacing:.02em;margin:0}
+  .col{display:flex;flex-direction:column;gap:16px}
+
+  /* ---- roster ---- */
+  .roster{display:flex;flex-direction:column;gap:7px}
+  .cp{display:grid;grid-template-columns:1fr auto;gap:2px 10px;width:100%;text-align:left;cursor:pointer;
+    background:var(--panel-2);border:1px solid var(--line);border-radius:var(--r-sm);padding:11px 12px;
+    color:inherit;transition:.15s;font-family:inherit}
+  .cp:hover{border-color:var(--line-2)}
+  .cp[aria-selected="true"]{border-color:var(--accent-line);background:var(--accent-soft)}
+  .cp .id{font-family:var(--mono);font-size:13.5px;font-weight:500;color:var(--ink)}
+  .cp .sub{font-size:11px;color:var(--dim);grid-column:1}
+  .cp .tier{grid-row:1/3;align-self:center;font-family:var(--mono);font-size:10.5px;font-weight:600;
+    letter-spacing:.06em;padding:4px 8px;border-radius:6px;text-align:center;white-space:nowrap}
+  .cp .sc{grid-row:2;justify-self:end;align-self:center;grid-column:2;display:none}
+
+  /* tier chip colors */
+  .tc-UNKNOWN{color:var(--t-unknown);background:rgba(108,122,140,.13);box-shadow:inset 0 0 0 1px rgba(108,122,140,.35)}
+  .tc-BRONZE{color:var(--t-bronze);background:rgba(196,122,69,.12);box-shadow:inset 0 0 0 1px rgba(196,122,69,.4)}
+  .tc-SILVER{color:var(--t-silver);background:rgba(170,182,194,.12);box-shadow:inset 0 0 0 1px rgba(170,182,194,.4)}
+  .tc-GOLD{color:var(--t-gold);background:rgba(227,183,63,.12);box-shadow:inset 0 0 0 1px rgba(227,183,63,.42)}
+  .tc-PLATINUM{color:var(--t-platinum);background:rgba(99,219,230,.12);box-shadow:inset 0 0 0 1px rgba(99,219,230,.42)}
+
+  /* ---- instrument ---- */
+  .instrument{padding:20px}
+  .inst-top{display:flex;gap:22px;align-items:center;flex-wrap:wrap}
+  .gauge{width:300px;flex:none;margin:0 auto}
+  .gauge svg{width:100%;height:auto;display:block}
+  .g-score{font-family:var(--disp);font-weight:800;font-size:46px;letter-spacing:-.02em}
+  .g-den{font-family:var(--mono);font-size:14px;fill:var(--dim)}
+  .g-tier{font-family:var(--disp);font-weight:700;font-size:15px;letter-spacing:.08em}
+  .g-cap{font-family:var(--mono);font-size:10px;letter-spacing:.05em}
+  .inst-id{flex:1;min-width:200px}
+  .inst-id .who{font-family:var(--mono);font-size:20px;font-weight:500}
+  .inst-id .meta{color:var(--mid);font-size:13px;margin-top:4px}
+  .inst-id .rat{list-style:none;margin:14px 0 0;padding:0;display:flex;flex-direction:column;gap:6px}
+  .inst-id .rat li{font-size:12.5px;color:var(--mid);padding-left:16px;position:relative;line-height:1.4}
+  .inst-id .rat li::before{content:"";position:absolute;left:2px;top:8px;width:5px;height:5px;border-radius:50%;
+    background:var(--accent)}
+
+  /* ---- components ---- */
+  .comps{margin-top:20px;border-top:1px solid var(--line);padding-top:16px;display:flex;flex-direction:column;gap:11px}
+  .comp{display:grid;grid-template-columns:150px 1fr 58px;gap:12px;align-items:center}
+  .comp .cl{font-size:12px;color:var(--mid)}
+  .comp .track{height:8px;background:var(--inset);border-radius:4px;overflow:hidden;border:1px solid var(--line)}
+  .comp .fill{height:100%;background:linear-gradient(90deg,var(--accent),#78a9ff);border-radius:4px;
+    transition:width .5s cubic-bezier(.2,.7,.2,1)}
+  .comp .cv{font-family:var(--mono);font-size:12px;text-align:right;color:var(--ink)}
+  .comp .cw{font-family:var(--mono);font-size:10.5px;color:var(--dim)}
+
+  /* ---- request module ---- */
+  .req{margin-top:18px;border-top:1px solid var(--line);padding-top:16px}
+  .req .presets{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0 15px}
+  .req .presets button{font-family:var(--mono);font-size:12.5px;color:var(--mid);background:var(--panel-2);
+    border:1px solid var(--line);border-radius:8px;padding:7px 12px;cursor:pointer;transition:.15s}
+  .req .presets button[aria-pressed="true"]{color:var(--ink);border-color:var(--accent-line);background:var(--accent-soft)}
+  .verdict{display:grid;grid-template-columns:auto 1fr;gap:0 18px;align-items:center;
+    background:var(--panel-2);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px}
+  .verdict .stamp{font-family:var(--disp);font-weight:800;font-size:22px;letter-spacing:.04em;
+    padding:10px 16px;border-radius:10px;text-align:center}
+  .stamp.ok{color:var(--good);background:var(--good-soft);box-shadow:inset 0 0 0 1px rgba(55,195,131,.4)}
+  .stamp.no{color:var(--bad);background:var(--bad-soft);box-shadow:inset 0 0 0 1px rgba(240,87,110,.4)}
+  .vgrid{display:flex;gap:26px;flex-wrap:wrap}
+  .vg{display:flex;flex-direction:column;gap:3px}
+  .vg .vk{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+  .vg .vv{font-family:var(--mono);font-size:17px;font-weight:500}
+  .vg .vv.big{font-size:19px}
+  .reason{margin-top:12px;font-size:12.5px;color:var(--mid);line-height:1.5}
+  .reason .backed{font-family:var(--mono);font-size:11px;color:var(--dim)}
+
+  /* ---- right column cards ---- */
+  .kv{display:flex;flex-direction:column;gap:9px}
+  .kv .row{display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+  .kv .k{font-size:12px;color:var(--dim)}
+  .kv .v{font-family:var(--mono);font-size:12.5px;text-align:right;word-break:break-all}
+  .v.link a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent-line)}
+  .v.schema{word-break:normal;overflow-wrap:normal;font-size:11.5px;line-height:1.5;color:var(--mid)}
+  .attest .claim{display:flex;align-items:center;gap:10px;background:var(--panel-2);border:1px solid var(--line);
+    border-radius:10px;padding:12px 13px;margin-bottom:13px}
+  .attest .claim .who{font-family:var(--mono);font-size:14px}
+  .attest .frozen{margin-top:13px;font-size:11.5px;color:var(--dim);line-height:1.5;border-top:1px dashed var(--line);padding-top:11px}
+
+  .reflect .memo{font-size:12.5px;color:var(--mid);line-height:1.5}
+  .reflect .pill{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;
+    padding:4px 9px;border-radius:6px;margin-bottom:11px}
+  .pill.trend-deteriorating{color:var(--bad);background:var(--bad-soft);box-shadow:inset 0 0 0 1px rgba(240,87,110,.35)}
+  .pill.trend-stable{color:var(--mid);background:var(--panel-2);box-shadow:inset 0 0 0 1px var(--line)}
+  .capline{margin-top:11px;font-family:var(--mono);font-size:11.5px;color:var(--warn);display:none}
+
+  /* ---- stacks ---- */
+  .stacks{display:flex;flex-direction:column;gap:9px}
+  .stk{display:grid;grid-template-columns:auto 1fr auto;gap:11px;align-items:center;
+    background:var(--panel-2);border:1px solid var(--line);border-radius:var(--r-sm);padding:11px 12px}
+  .stk .sd{width:8px;height:8px;border-radius:50%}
+  .stk .sn{font-size:12.5px;font-weight:600}
+  .stk .ss{font-size:11px;color:var(--dim)}
+  .stk .st{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;
+    padding:3px 7px;border-radius:5px}
+  .st.live{color:var(--good);background:var(--good-soft)}
+  .st.mand{color:var(--accent);background:var(--accent-soft)}
+  .st.wired{color:var(--mid);background:var(--panel)}
+
+  footer{margin-top:26px;padding-top:18px;border-top:1px solid var(--line);
+    display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:baseline}
+  footer p{margin:0;font-size:12px;color:var(--dim);max-width:62ch;line-height:1.5}
+  footer .thesis{color:var(--mid)}
+  footer code{font-family:var(--mono);color:var(--mid);font-size:11.5px}
+
+  @media (max-width:960px){
+    .grid{grid-template-columns:1fr}
+    .roster{display:grid;grid-template-columns:1fr 1fr}
+  }
+  @media (max-width:560px){
+    .comp{grid-template-columns:110px 1fr 50px}
+    .roster{grid-template-columns:1fr}
+    .master{min-width:0;width:100%}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <h1>
+        <svg class="shield" viewBox="0 0 26 30" aria-hidden="true">
+          <path d="M13 1 L24 5 V15 C24 23 19 27 13 29 C7 27 2 23 2 15 V5 Z" fill="none" stroke="#4f8dfb" stroke-width="1.6"/>
+          <path d="M8 15 l3.4 3.6 L18 10" fill="none" stroke="#63dbe6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Meritor
+      </h1>
+      <p>A load-bearing credit memory for autonomous agents. Recall a counterparty's history, set a collateral tier, move real money on Base &mdash; or refuse.</p>
+      <span class="chainchip"><span class="dot" id="chaindot"></span> Base mainnet &middot; EAS attestation live</span>
+      <span class="chainchip" id="liveTag" hidden style="margin-left:8px"><span class="dot" style="background:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)"></span> live engine &middot; real Sibyl DB</span>
+    </div>
+    <div class="master">
+      <div class="lab">
+        <span class="k">Sibyl Memory</span>
+        <span class="state on" id="memState">ONLINE</span>
+      </div>
+      <div class="toggle" role="group" aria-label="Sibyl Memory state">
+        <button id="btnOn" aria-pressed="true" onclick="setWiped(false)">Online</button>
+        <button id="btnOff" class="danger" aria-pressed="false" onclick="setWiped(true)">Erase &mdash; run deletion test</button>
+      </div>
+      <p class="hint" id="masterHint">The credit engine reads every decision from Sibyl Memory. Erase it to watch the desk fail closed.</p>
+    </div>
+  </header>
+
+  <div class="banner" id="banner">
+    <span class="bico" id="banIco">GATE&nbsp;OPEN</span>
+    <span id="banTxt">Underwriting from recalled memory. Uncollateralized credit is available to counterparties that have earned it across sessions.</span>
+  </div>
+
+  <div class="grid">
+    <!-- roster -->
+    <div class="panel">
+      <div class="head"><h2>Counterparties</h2><span class="eyebrow" id="rosterCount"></span></div>
+      <div class="roster" id="roster"></div>
+    </div>
+
+    <!-- instrument -->
+    <div class="panel instrument">
+      <div class="inst-top">
+        <div class="gauge"><div id="gauge"></div></div>
+        <div class="inst-id">
+          <div class="who" id="who">0xALPHA</div>
+          <div class="meta" id="meta"></div>
+          <ul class="rat" id="rationale"></ul>
+        </div>
+      </div>
+
+      <div class="comps" id="comps"></div>
+
+      <div class="req">
+        <div class="head"><h2 style="font-family:var(--disp)">Credit request</h2><span class="eyebrow">collateral is priced from the tier</span></div>
+        <div class="presets" id="presets"></div>
+        <div class="verdict">
+          <div class="stamp ok" id="stamp">APPROVED</div>
+          <div>
+            <div class="vgrid">
+              <div class="vg"><span class="vk">Requested</span><span class="vv" id="vReq">$50</span></div>
+              <div class="vg"><span class="vk">Approved</span><span class="vv big" id="vApp">$50</span></div>
+              <div class="vg"><span class="vk">Collateral</span><span class="vv" id="vCol">$0 &middot; 0%</span></div>
+              <div class="vg"><span class="vk">Tier ceiling</span><span class="vv" id="vCeil">$10,000</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="reason"><span id="reason"></span> <span class="backed" id="backed"></span></div>
+      </div>
+    </div>
+
+    <!-- right column -->
+    <div class="col">
+      <div class="panel reflect">
+        <div class="head"><h2>Reflection memo</h2><span class="eyebrow">consolidated</span></div>
+        <div class="pill trend-stable" id="trendPill"><span>trend</span> <span id="trendVal">stable</span></div>
+        <div class="memo" id="memo"></div>
+        <div class="capline" id="capline"></div>
+      </div>
+
+      <div class="panel attest">
+        <div class="head"><h2>Onchain attestation</h2><span class="eyebrow">Base &middot; live</span></div>
+        <div class="claim">
+          <span class="tier tc-PLATINUM" style="font-family:var(--mono);font-size:11px;font-weight:600;padding:5px 9px;border-radius:6px">PLATINUM</span>
+          <div><div class="who">0xALPHA</div><div style="font-size:11.5px;color:var(--dim)">attested 856 / 1000</div></div>
+        </div>
+        <div class="kv">
+          <div class="row"><span class="k">Schema</span><span class="v schema">agentId, score, tier,<br>evidenceCount, sessions, assessedAt</span></div>
+          <div class="row"><span class="k">Attestation</span><span class="v">0x66c791&hellip;9a0e2a</span></div>
+          <div class="row"><span class="k">Tx</span><span class="v">0xfcb465&hellip;13110f61</span></div>
+          <div class="row"><span class="k">Block</span><span class="v">50,862,970</span></div>
+          <div class="row"><span class="k">View</span><span class="v link"><a href="https://base.easscan.org/attestation/view/0x66c791a420a61bcd3d33bf6c8ba8c6fe54b8dcdfe13852c8da7077bfdd9a0e2a" target="_blank" rel="noopener">EAS &#8599;</a> &nbsp; <a href="https://basescan.org/tx/0xfcb465afde7eecb91727fec2c5315560ab374f9fad3ae8873db4ce5b13110f61" target="_blank" rel="noopener">Basescan &#8599;</a></span></div>
+        </div>
+        <p class="frozen">Frozen at publish. The live score drifts with time-decay; the attestation preserves the tier exactly as Meritor recalled it &mdash; memory made portable.</p>
+      </div>
+
+      <div class="panel">
+        <div class="head"><h2>Stacks doing real work</h2></div>
+        <div class="stacks">
+          <div class="stk"><span class="sd" style="background:var(--accent)"></span><div><div class="sn">Sibyl Memory</div><div class="ss">recall, journal, search, temporal, reflection</div></div><span class="st mand">core</span></div>
+          <div class="stk"><span class="sd" style="background:var(--good)"></span><div><div class="sn">Base &middot; EAS</div><div class="ss">recalled tier &rarr; onchain attestation</div></div><span class="st live">live</span></div>
+          <div class="stk"><span class="sd" style="background:var(--t-gold)"></span><div><div class="sn">Virtuals ACP</div><div class="ss">job outcome &rarr; credit event</div></div><span class="st wired">wired</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p class="thesis"><strong style="color:var(--ink)">The only variable is memory.</strong> Same agent, same request &mdash; PLATINUM at 0% collateral one session, denied at 150% the next, decided entirely by what Sibyl Memory could recall.</p>
+    <p>Figures computed by Meritor's scoring module &middot; <code>github.com/mrnetwork0001/Meritor</code></p>
+  </footer>
+</div>
+
+<script>
+const DATA = {
+  collateral:{UNKNOWN:1.5,BRONZE:1.2,SILVER:.75,GOLD:.25,PLATINUM:0},
+  ceiling:{UNKNOWN:0,BRONZE:100,SILVER:500,GOLD:2000,PLATINUM:10000},
+  weights:{sla_completion:350,repayment_reliability:300,repayment_velocity:100,dispute_record:150,maturity:100},
+  clabels:{sla_completion:"SLA completion",repayment_reliability:"Repayment",repayment_velocity:"Velocity",dispute_record:"Dispute record",maturity:"Maturity"},
+  agents:[
+    {id:"0xALPHA",score:849,tier:"PLATINUM",scoreTier:"PLATINUM",events:25,sessions:4,volume:1440,
+     components:{sla_completion:295.7,repayment_reliability:249.3,repayment_velocity:58.3,dispute_record:150,maturity:95.6},
+     rationale:["13/13 ACP jobs delivered on time","12/12 loans repaid, 0 defaulted","repays 4.0h ahead of deadline on average","observed across 4 sessions, $1,440 lifetime volume"],
+     trend:"stable",tier_cap:null,memo:"Stable trajectory across four sessions. No policy override; the score stands on its own evidence."},
+    {id:"0xGAMMA",score:757,tier:"GOLD",scoreTier:"GOLD",events:12,sessions:2,volume:720,
+     components:{sla_completion:254.4,repayment_reliability:217.6,repayment_velocity:58.3,dispute_record:150,maturity:76.4},
+     rationale:["6/6 ACP jobs delivered on time","6/6 loans repaid, 0 defaulted","repays 4.0h ahead of deadline on average","observed across 2 sessions, $720 lifetime volume"],
+     trend:"stable",tier_cap:null,memo:"Clean two-session record. Approaching the uncollateralized tier but not yet deep enough to reach it."},
+    {id:"0xBETA",score:518,tier:"SILVER",scoreTier:"SILVER",events:4,sessions:2,volume:240,
+     components:{sla_completion:167.3,repayment_reliability:142.8,repayment_velocity:58.3,dispute_record:91.2,maturity:58.3},
+     rationale:["2/2 ACP jobs delivered on time","2/2 loans repaid, 0 defaulted","returning counterparty, thin file","observed across 2 sessions, $240 lifetime volume"],
+     trend:"stable",tier_cap:null,memo:"A thin but clean file. Credit for a spotless record earns out with volume, so collateral stays high until more history accrues."},
+    {id:"0xDELTA",score:676,tier:"SILVER",scoreTier:"GOLD",events:25,sessions:4,volume:1440,
+     components:{sla_completion:291.2,repayment_reliability:80.5,repayment_velocity:58.3,dispute_record:150,maturity:95.6},
+     rationale:["12/12 ACP jobs delivered on time","12/13 loans repaid — 1 defaulted","a default landed inside the last 30 days","observed across 4 sessions, $1,440 lifetime volume"],
+     trend:"deteriorating",tier_cap:"SILVER",memo:"Scores into GOLD on raw evidence, but reflection reads a recent default and a deteriorating trajectory across sessions."},
+  ],
+};
+
+let state = {sel:"0xALPHA", wiped:false, req:50, prevScore:0};
+const $ = s => document.querySelector(s);
+const money = n => "$"+Math.round(n).toLocaleString("en-US");
+const agent = id => DATA.agents.find(a=>a.id===id);
+const TIER_COLOR = {UNKNOWN:"--t-unknown",BRONZE:"--t-bronze",SILVER:"--t-silver",GOLD:"--t-gold",PLATINUM:"--t-platinum"};
+const cssv = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+
+// view resolves the displayed state, honoring the memory switch
+function view(a){
+  if(state.wiped){
+    return {score:0,tier:"UNKNOWN",components:{sla_completion:0,repayment_reliability:0,repayment_velocity:0,dispute_record:0,maturity:0},
+      memoryBacked:false,wiped:true};
+  }
+  return {score:a.score,tier:a.tier,components:a.components,memoryBacked:true,wiped:false};
+}
+
+// ---- gauge ----
+function polar(cx,cy,r,score){const ang=Math.PI*(1-score/1000);return [cx+r*Math.cos(ang), cy-r*Math.sin(ang)];}
+function arc(cx,cy,r,s0,s1){const [x0,y0]=polar(cx,cy,r,s0);const [x1,y1]=polar(cx,cy,r,s1);
+  return `M ${x0.toFixed(2)} ${y0.toFixed(2)} A ${r} ${r} 0 0 1 ${x1.toFixed(2)} ${y1.toFixed(2)}`;}
+
+function drawGauge(score,tier,scoreTier){
+  const cx=160,cy=170,r=126;
+  const bands=[[0,200,"--t-unknown"],[200,420,"--t-bronze"],[420,620,"--t-silver"],[620,820,"--t-gold"],[820,1000,"--t-platinum"]];
+  let band="";
+  for(const [a,b,c] of bands){band+=`<path d="${arc(cx,cy,r,a,b)}" stroke="${cssv(c)}" stroke-width="10" fill="none" opacity=".28" stroke-linecap="butt"/>`;}
+  const val = score>0 ? `<path d="${arc(cx,cy,r,0.5,Math.max(score,1))}" stroke="${cssv(TIER_COLOR[tier])}" stroke-width="10" fill="none" stroke-linecap="round"/>` : "";
+  const [kx,ky] = polar(cx,cy,r,Math.max(score,0.5));
+  const knob = score>0 ? `<circle cx="${kx.toFixed(1)}" cy="${ky.toFixed(1)}" r="7" fill="${cssv(TIER_COLOR[tier])}" stroke="${cssv('--bg')}" stroke-width="2.5"/>` : "";
+  // tier boundary ticks
+  let ticks="";
+  for(const t of [200,420,620,820]){const [ax,ay]=polar(cx,cy,r+8,t);const [bx,by]=polar(cx,cy,r-8,t);
+    ticks+=`<line x1="${ax.toFixed(1)}" y1="${ay.toFixed(1)}" x2="${bx.toFixed(1)}" y2="${by.toFixed(1)}" stroke="${cssv('--line-2')}" stroke-width="1.5"/>`;}
+  const capNote = (!state.wiped && scoreTier && scoreTier!==tier)
+    ? `<text x="160" y="150" text-anchor="middle" class="g-cap" fill="${cssv('--warn')}">capped from ${scoreTier}</text>` : "";
+  const tierLabel = state.wiped ? "0-TRUST" : tier;
+  const tierCol = state.wiped ? cssv('--bad') : cssv(TIER_COLOR[tier]);
+  return `<svg viewBox="0 0 320 205" role="img" aria-label="Credit score ${score} of 1000, tier ${tierLabel}">
+    ${band}${val}${ticks}${knob}
+    <text x="26" y="196" class="g-den" text-anchor="middle">0</text>
+    <text x="294" y="196" class="g-den" text-anchor="middle">1000</text>
+    <text x="160" y="118" text-anchor="middle" class="g-score" fill="${cssv('--ink')}"><tspan id="scoreNum">${score}</tspan></text>
+    <text x="160" y="137" text-anchor="middle" class="g-den">/ 1000</text>
+    ${capNote}
+    <text x="160" y="182" text-anchor="middle" class="g-tier" fill="${tierCol}">${tierLabel}</text>
+  </svg>`;
+}
+
+function tween(from,to){
+  const el = $("#scoreNum"); if(!el) return;
+  if(matchMedia("(prefers-reduced-motion:reduce)").matches){el.textContent=to;return;}
+  const t0=performance.now(),dur=480;
+  function step(t){const p=Math.min(1,(t-t0)/dur);const e=1-Math.pow(1-p,3);
+    el.textContent=Math.round(from+(to-from)*e);if(p<1)requestAnimationFrame(step);}
+  requestAnimationFrame(step);
+}
+
+function render(){
+  const a = agent(state.sel), v = view(a);
+
+  // roster
+  $("#roster").innerHTML = DATA.agents.map(x=>{
+    const rv = view(x); const t = rv.tier;
+    return `<button class="cp" role="option" aria-selected="${x.id===state.sel}" onclick="select('${x.id}')">
+      <span class="id">${x.id}</span>
+      <span class="sub">${state.wiped?"memory erased":`${rv.score} · ${x.sessions} sessions`}</span>
+      <span class="tier tc-${t}">${state.wiped?"—":t}</span>
+    </button>`;}).join("");
+  $("#rosterCount").textContent = DATA.agents.length+" on book";
+
+  // gauge
+  $("#gauge").innerHTML = drawGauge(v.score, v.tier, state.wiped?null:a.scoreTier);
+  tween(state.prevScore, v.score); state.prevScore = v.score;
+
+  // identity + rationale
+  $("#who").textContent = a.id;
+  $("#meta").innerHTML = state.wiped
+    ? `<span style="color:var(--bad)">No recall &mdash; counterparty is an unknown 0-trust entity.</span>`
+    : `${a.events} credit events · ${a.sessions} sessions · ${money(a.volume)} lifetime volume`;
+  $("#rationale").innerHTML = state.wiped
+    ? `<li style="--x:0">Sibyl Memory returned nothing. There is no SLA record, no repayment history, nothing to price.</li>`
+    : a.rationale.map(r=>`<li>${r}</li>`).join("");
+
+  // components
+  $("#comps").innerHTML = Object.keys(DATA.weights).map(k=>{
+    const w=DATA.weights[k], val=v.components[k]||0, pct=Math.max(0,Math.min(100,val/w*100));
+    return `<div class="comp"><span class="cl">${DATA.clabels[k]}</span>
+      <span class="track"><span class="fill" style="width:${pct}%"></span></span>
+      <span><span class="cv">${val.toFixed(0)}</span><span class="cw"> /${w}</span></span></div>`;}).join("");
+
+  // request verdict
+  renderVerdict(a,v);
+
+  // reflection
+  const pill=$("#trendPill"); pill.className="pill trend-"+(state.wiped?"stable":a.trend);
+  $("#trendVal").textContent = state.wiped ? "unknown" : a.trend;
+  $("#memo").textContent = state.wiped
+    ? "With memory erased there is nothing to consolidate. Reflection has no journal to read."
+    : a.memo;
+  const cap=$("#capline");
+  if(!state.wiped && a.tier_cap && a.scoreTier!==a.tier){
+    cap.style.display="block";
+    cap.textContent = `▸ Cap active: scores ${a.scoreTier} → held at ${a.tier}. Reflection only ever tightens.`;
+  } else cap.style.display="none";
+
+  // chrome
+  $("#memState").textContent = state.wiped?"ERASED":"ONLINE";
+  $("#memState").className = "state "+(state.wiped?"off":"on");
+  $("#chaindot").style.background = state.wiped?cssv('--bad'):cssv('--good');
+  $("#btnOn").setAttribute("aria-pressed", String(!state.wiped));
+  $("#btnOff").setAttribute("aria-pressed", String(state.wiped));
+  const ban=$("#banner");
+  if(state.wiped){
+    ban.className="banner alert"; $("#banIco").textContent="0-TRUST";
+    $("#banTxt").innerHTML="<strong>Sibyl Memory erased.</strong> Every counterparty is now an unknown stranger. The credit engine fails closed &mdash; 150% collateral, uncollateralized loans denied. Nothing else in the system changed.";
+    $("#masterHint").textContent="The engine has no basis to price risk for anyone. Bring memory back online to restore recall.";
+  } else {
+    ban.className="banner"; $("#banIco").textContent="GATE OPEN";
+    $("#banTxt").innerHTML="Underwriting from recalled memory. Uncollateralized credit is available to counterparties that have earned it across sessions.";
+    $("#masterHint").textContent="The credit engine reads every decision from Sibyl Memory. Erase it to watch the desk fail closed.";
+  }
+}
+
+function renderVerdict(a,v){
+  const ratio=DATA.collateral[v.tier], ceil=DATA.ceiling[v.tier];
+  const approved=Math.min(state.req, ceil), ok=approved>0 && v.memoryBacked;
+  $("#vReq").textContent=money(state.req);
+  $("#vApp").textContent=ok?money(approved):"$0";
+  $("#vCol").innerHTML=ok?`${money(approved*ratio)} &middot; ${Math.round(ratio*100)}%`:`&mdash; &middot; ${Math.round(ratio*100)}%`;
+  $("#vCeil").textContent=money(ceil);
+  const stamp=$("#stamp");
+  stamp.textContent=ok?"APPROVED":"DENIED"; stamp.className="stamp "+(ok?"ok":"no");
+  let reason;
+  if(state.wiped) reason="Memory unavailable &mdash; no recall, no basis to price risk. Falling back to 0-trust rejection.";
+  else if(!ok && ceil===0) reason=`Unknown counterparty. Uncollateralized credit denied; ${Math.round(ratio*100)}% collateral required.`;
+  else if(approved<state.req) reason=`${v.tier} carries a ${money(ceil)} exposure ceiling. Approving ${money(approved)} of ${money(state.req)} at ${Math.round(ratio*100)}% collateral.`;
+  else if(ratio===0) reason=`Recalled a clean multi-session record → ${v.tier}. Releasing ${money(approved)} at <strong style="color:var(--good)">0% collateral</strong> — uncollateralized credit, earned across sessions.`;
+  else reason=`Recalled ${v.tier} standing. Approving ${money(approved)} at ${Math.round(ratio*100)}% collateral.`;
+  $("#reason").innerHTML=reason;
+  $("#backed").textContent = v.memoryBacked ? "· memory-backed" : "· not memory-backed";
+}
+
+function renderPresets(){
+  const opts=[50,500,2000,10000];
+  $("#presets").innerHTML=opts.map(o=>`<button aria-pressed="${o===state.req}" onclick="setReq(${o})">${money(o)}</button>`).join("");
+}
+window.select=id=>{state.sel=id;render();};
+window.setReq=n=>{state.req=n;renderPresets();render();};
+window.setWiped=w=>{
+  state.wiped=w; render();
+  // When served over http, the wipe is real: erase / reseed the Sibyl DB on the
+  // server so a judge curling /api/agents afterwards sees the same 0-trust state.
+  if(LIVE){ fetch("/api/memory/"+(w?"wipe":"restore"),{method:"POST"}).catch(()=>{}); }
+};
+
+// Live mode: if a Meritor server is behind this page, take the roster, the
+// collateral policy, and the attestation straight from the real engine. Falls
+// back to the embedded snapshot so the page also stands alone as an artifact.
+let LIVE=false;
+async function boot(){
+  renderPresets(); render();               // paint the embedded snapshot at once
+  try{
+    const [ag,cfg]=await Promise.all([
+      fetch("/api/agents").then(r=>r.ok?r.json():Promise.reject()),
+      fetch("/api/config").then(r=>r.ok?r.json():Promise.reject()),
+    ]);
+    if(ag.agents&&ag.agents.length){
+      const byId=Object.fromEntries(ag.agents.map(a=>[a.id,a]));
+      DATA.agents=DATA.agents.map(a=>({...a, ...byId[a.id]}));
+    }
+    if(cfg.collateral) DATA.collateral=cfg.collateral;
+    if(cfg.ceiling) DATA.ceiling=cfg.ceiling;
+    state.wiped = cfg.memoryOnline===false;
+    LIVE=true;
+    const tag=document.getElementById("liveTag"); if(tag) tag.hidden=false;
+    render();
+  }catch(e){ /* standalone artifact mode; embedded data stands */ }
+}
+boot();
+</script>
