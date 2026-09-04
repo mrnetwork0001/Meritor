@@ -113,6 +113,21 @@ mid-window could invalidate a recorded demo.
 For the partner stacks, copy `.env.example` to `.env` and fill in a Base Sepolia
 key (see [`docs/PARTNER_STACKS.md`](docs/PARTNER_STACKS.md)).
 
+## Web frontend
+
+A landing page and an interactive **credit desk**, served locally and backed by
+the *real* engine — not a mockup. The desk's deletion-test switch actually
+erases a live Sibyl Memory database, so recall genuinely collapses to 0-trust.
+
+```bash
+pip install -r requirements.txt          # includes fastapi + uvicorn
+python -m uvicorn web.server:app --port 8848
+open http://127.0.0.1:8848               # landing page; the desk is at /desk
+```
+
+The API is live against the engine: `GET /api/agents`, `POST /api/decision`,
+and `POST /api/memory/wipe` | `/restore` (the deletion test over HTTP).
+
 ## Tests
 
 ```bash
