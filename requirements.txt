@@ -1,0 +1,13 @@
+# Mandatory, load-bearing. Pinned: 0.8.0 shipped 2026-08-31, one day before the
+# build window, with commits still landing after — an unpinned upgrade mid-window
+# could invalidate a recorded demo.
+sibyl-memory-client==0.8.0
+
+# Base partner stack: x402 micropayments (protocol v2) + onchain settlement.
+x402[httpx]>=2.22.0
+web3>=6.15.0
+eth-account>=0.11.0
+
+pydantic>=2.6.0
+python-dotenv>=1.0.0
+requests>=2.31.0
