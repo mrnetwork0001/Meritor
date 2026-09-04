@@ -98,6 +98,7 @@ criterion rewards coordination and dynamic-storage patterns over plain recall.
 ## Setup
 
 ```bash
+git clone https://github.com/mrnetwork0001/Meritor.git && cd Meritor
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt          # installs sibyl-memory-client==0.8.0
 export MEMORY_DRIVER=sibyl
