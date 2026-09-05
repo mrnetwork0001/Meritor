@@ -18,8 +18,10 @@ from datetime import timedelta
 from pathlib import Path
 from typing import Any
 
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 
 from meritor.domain.models import CounterpartyProfile, CreditEvent, EventType, utcnow
@@ -124,12 +126,13 @@ def _agent_view(be: SibylMemoryBackend, agent_id: str) -> dict[str, Any] | None:
 
 AGENT_ORDER = ["0xALPHA", "0xGAMMA", "0xBETA", "0xDELTA"]
 
-app = FastAPI(title="Meritor Credit Desk", docs_url="/api/docs")
+@asynccontextmanager
+async def lifespan(_app: FastAPI):
+    seed()  # ensure the demo namespace exists before the first request
+    yield
 
 
-@app.on_event("startup")
-def _startup() -> None:
-    seed()
+app = FastAPI(title="Meritor Credit Desk", docs_url="/api/docs", lifespan=lifespan)
 
 
 @app.get("/")
