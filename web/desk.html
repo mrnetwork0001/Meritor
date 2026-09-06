@@ -70,7 +70,7 @@
 
   /* ---- main grid ---- */
   .grid{display:grid;grid-template-columns:288px minmax(0,1fr) 320px;gap:16px;align-items:start}
-  .panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px;box-shadow:0 18px 44px -34px rgba(0,0,0,.7)}
   .panel > .head{display:flex;align-items:center;justify-content:space-between;margin:-2px 0 13px}
   .panel > .head h2{font-family:var(--disp);font-weight:700;font-size:13px;letter-spacing:.02em;margin:0}
   .col{display:flex;flex-direction:column;gap:16px}
@@ -189,6 +189,22 @@
     .roster{grid-template-columns:1fr}
     .master{min-width:0;width:100%}
   }
+  /* ---- guided steps + explainers ---- */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:0 0 20px}
+  .step{display:flex;gap:12px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);
+    border-radius:var(--r-sm);padding:13px 15px}
+  .step .n{font-family:var(--mono);font-size:12px;color:var(--accent);border:1px solid var(--accent-line);
+    border-radius:7px;width:24px;height:24px;display:grid;place-items:center;flex:none;font-weight:600}
+  .step .t{font-size:12.5px;color:var(--mid);line-height:1.45}
+  .step .t b{color:var(--ink);font-weight:600}
+  .cap{font-size:11.5px;color:var(--dim);margin:-4px 0 13px;line-height:1.4}
+  .seclabel{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--dim);margin:0 0 12px;display:flex;align-items:center;gap:10px}
+  .seclabel::after{content:"";flex:1;height:1px;background:var(--line)}
+  .ladder{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+  .ladder .ld{font-family:var(--mono);font-size:10.5px;font-weight:600;padding:5px 9px;border-radius:6px;letter-spacing:.03em}
+  .ladder .ld.active{outline:2px solid currentColor;outline-offset:1px}
+  @media (max-width:820px){.steps{grid-template-columns:1fr}}
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
   :focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
 </style>
@@ -221,15 +237,23 @@
     <span id="banTxt">Underwriting from recalled memory. Uncollateralized credit is available to counterparties that have earned it across sessions.</span>
   </div>
 
+  <div class="steps">
+    <div class="step"><span class="n">1</span><span class="t"><b>Pick a counterparty.</b> Each carries a different history in Sibyl Memory.</span></div>
+    <div class="step"><span class="n">2</span><span class="t"><b>Price a request.</b> The recalled score sets a tier; the tier sets the collateral.</span></div>
+    <div class="step"><span class="n">3</span><span class="t"><b>Erase memory.</b> The gate fails closed - every agent drops to 0-trust.</span></div>
+  </div>
+
   <div class="grid">
     <!-- roster -->
     <div class="panel">
       <div class="head"><h2>Counterparties</h2><span class="eyebrow" id="rosterCount"></span></div>
+      <div class="cap">Autonomous agents Meritor has underwritten. Click one to price its credit.</div>
       <div class="roster" id="roster"></div>
     </div>
 
     <!-- instrument -->
     <div class="panel instrument">
+      <div class="seclabel">Credit score &middot; recalled from memory</div>
       <div class="inst-top">
         <div class="gauge"><div id="gauge"></div></div>
         <div class="inst-id">
@@ -239,10 +263,11 @@
         </div>
       </div>
 
+      <div class="seclabel" style="margin-top:20px">Score breakdown &middot; points out of each factor's weight</div>
       <div class="comps" id="comps"></div>
 
       <div class="req">
-        <div class="head"><h2 style="font-family:var(--disp)">Credit request</h2><span class="eyebrow">collateral is priced from the tier</span></div>
+        <div class="head"><h2 style="font-family:var(--disp)">Price a credit request</h2><span class="eyebrow">choose an amount to underwrite</span></div>
         <div class="presets" id="presets"></div>
         <div class="verdict">
           <div class="stamp ok" id="stamp">APPROVED</div>
@@ -256,20 +281,28 @@
           </div>
         </div>
         <div class="reason"><span id="reason"></span> <span class="backed" id="backed"></span></div>
+        <div class="seclabel" style="margin-top:20px">Collateral ladder &middot; tier &rarr; collateral required</div>
+        <div class="ladder" id="ladder">
+          <span class="ld tc-PLATINUM" data-tier="PLATINUM">PLATINUM 0%</span>
+          <span class="ld tc-GOLD" data-tier="GOLD">GOLD 25%</span>
+          <span class="ld tc-SILVER" data-tier="SILVER">SILVER 75%</span>
+          <span class="ld tc-BRONZE" data-tier="BRONZE">BRONZE 120%</span>
+          <span class="ld tc-UNKNOWN" data-tier="UNKNOWN">UNKNOWN 150%</span>
+        </div>
       </div>
     </div>
 
     <!-- right column -->
     <div class="col">
       <div class="panel reflect">
-        <div class="head"><h2>Reflection memo</h2><span class="eyebrow">consolidated</span></div>
+        <div class="head"><h2>Reflection memo</h2><span class="eyebrow">trend from the journal</span></div>
         <div class="pill trend-stable" id="trendPill"><span>trend</span> <span id="trendVal">stable</span></div>
         <div class="memo" id="memo"></div>
         <div class="capline" id="capline"></div>
       </div>
 
       <div class="panel attest">
-        <div class="head"><h2>Onchain attestation</h2><span class="eyebrow">Base &middot; live</span></div>
+        <div class="head"><h2>Onchain attestation</h2><span class="eyebrow">the tier, published to Base</span></div>
         <div class="claim">
           <span class="tier tc-PLATINUM" style="font-family:var(--mono);font-size:11px;font-weight:600;padding:5px 9px;border-radius:6px">PLATINUM</span>
           <div><div class="who">0xALPHA</div><div style="font-size:11.5px;color:var(--dim)">attested 856 / 1000</div></div>
@@ -467,6 +500,9 @@ function renderVerdict(a,v){
   else reason=`Recalled ${v.tier} standing. Approving ${money(approved)} at ${Math.round(ratio*100)}% collateral.`;
   $("#reason").innerHTML=reason;
   $("#backed").textContent = v.memoryBacked ? "· memory-backed" : "· not memory-backed";
+  // highlight the counterparty's tier in the collateral ladder
+  document.querySelectorAll("#ladder .ld").forEach(el =>
+    el.classList.toggle("active", el.dataset.tier === v.tier));
 }
 
 function renderPresets(){
