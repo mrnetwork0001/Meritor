@@ -22,6 +22,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from meritor.domain.models import CounterpartyProfile, CreditEvent, EventType, utcnow
@@ -133,6 +134,10 @@ async def lifespan(_app: FastAPI):
 
 
 app = FastAPI(title="Meritor Credit Desk", docs_url="/api/docs", lifespan=lifespan)
+
+_assets = WEB_DIR / "assets"
+_assets.mkdir(exist_ok=True)
+app.mount("/assets", StaticFiles(directory=str(_assets)), name="assets")
 
 
 @app.get("/")
