@@ -1,18 +1,19 @@
 <title>Meritor Credit Desk</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
 <style>
   :root{
     color-scheme: dark;
-    --bg:#0b111a; --panel:#121b28; --panel-2:#0e1621; --inset:#0a1019;
-    --line:#20304400; --line:#213043; --line-2:#31465f;
-    --ink:#e9eff7; --mid:#a4b4c8; --dim:#65768c;
-    --accent:#4f8dfb; --accent-soft:rgba(79,141,251,.13); --accent-line:rgba(79,141,251,.4);
+    --bg:#17130e; --panel:#221c15; --panel-2:#1a150f; --inset:#120e08;
+    --line:#342b20; --line-2:#4a3d2c;
+    --ink:#f1eadc; --mid:#b9ab97; --dim:#8a7c67;
+    --accent:#cf9a4e; --accent-soft:rgba(207,154,78,.14); --accent-line:rgba(207,154,78,.42);
     --good:#37c383; --good-soft:rgba(55,195,131,.12);
     --bad:#f0576e; --bad-soft:rgba(240,87,110,.12);
     --warn:#e3b23f;
     --t-unknown:#6c7a8c; --t-bronze:#c47a45; --t-silver:#aab6c2; --t-gold:#e3b73f; --t-platinum:#63dbe6;
+    --serif:"Fraunces",Georgia,serif;
     --sans:"IBM Plex Sans",system-ui,-apple-system,sans-serif;
     --disp:"Archivo",var(--sans);
     --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
@@ -29,7 +30,7 @@
   /* ---- header ---- */
   header{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:wrap;
     padding-bottom:20px;border-bottom:1px solid var(--line)}
-  .brand h1{font-family:var(--disp);font-weight:800;font-size:30px;letter-spacing:-.02em;margin:0;
+  .brand h1{font-family:var(--serif);font-weight:600;font-size:30px;letter-spacing:-.01em;margin:0;
     display:flex;align-items:center;gap:11px}
   .shield{width:26px;height:30px;flex:none}
   .brand p{margin:6px 0 0;color:var(--mid);font-size:14px;max-width:44ch}
@@ -112,7 +113,7 @@
   .comp{display:grid;grid-template-columns:150px 1fr 58px;gap:12px;align-items:center}
   .comp .cl{font-size:12px;color:var(--mid)}
   .comp .track{height:8px;background:var(--inset);border-radius:4px;overflow:hidden;border:1px solid var(--line)}
-  .comp .fill{height:100%;background:linear-gradient(90deg,var(--accent),#78a9ff);border-radius:4px;
+  .comp .fill{height:100%;background:linear-gradient(90deg,var(--accent),#e6bd77);border-radius:4px;
     transition:width .5s cubic-bezier(.2,.7,.2,1)}
   .comp .cv{font-family:var(--mono);font-size:12px;text-align:right;color:var(--ink)}
   .comp .cw{font-family:var(--mono);font-size:10.5px;color:var(--dim)}
@@ -193,7 +194,7 @@
     <div class="brand">
       <h1>
         <svg class="shield" viewBox="0 0 26 30" aria-hidden="true">
-          <path d="M13 1 L24 5 V15 C24 23 19 27 13 29 C7 27 2 23 2 15 V5 Z" fill="none" stroke="#4f8dfb" stroke-width="1.6"/>
+          <path d="M13 1 L24 5 V15 C24 23 19 27 13 29 C7 27 2 23 2 15 V5 Z" fill="none" stroke="#cf9a4e" stroke-width="1.6"/>
           <path d="M8 15 l3.4 3.6 L18 10" fill="none" stroke="#63dbe6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
         Meritor
