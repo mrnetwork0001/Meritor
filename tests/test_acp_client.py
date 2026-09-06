@@ -45,3 +45,10 @@ def test_phase_mapping_is_total():
     """Every phase must map to an event or explicit None — no KeyError at runtime."""
     for phase in JobPhase:
         assert phase in PHASE_TO_EVENT
+
+
+def test_whoami_mock_returns_registered_identity():
+    from meritor.agents.acp_client import ACPClient, REGISTERED_AGENT
+    who = ACPClient(mock=True).whoami()
+    assert who["acp_agent_id"] == REGISTERED_AGENT["acp_agent_id"]
+    assert who["erc8004_id_base"] == 84921

@@ -26,6 +26,18 @@ from typing import Any
 from ..domain.models import CreditEvent, EventType
 
 
+# Meritor's live ACP registration (Virtuals). Registered on ERC-8004 on Base
+# mainnet as agent #84921; exposes the `meritor_credit_report` offering. This is
+# the real identity the CLI operates as once `acp configure` has authenticated.
+REGISTERED_AGENT = {
+    "name": "Meritor",
+    "acp_agent_id": "01a075bc-bf93-73e3-a1bd-cc0904791ab3",
+    "wallet": "0xcd1e56694767cb4ab26ca87abcce5e964c41a196",
+    "erc8004_id_base": 84921,
+    "offering": "meritor_credit_report",
+}
+
+
 class JobPhase(str, Enum):
     """ACP v2 on-chain states, plus the CLI's terminal branches."""
 
@@ -129,6 +141,12 @@ class ACPClient:
             raise ACPError(f"non-JSON output from {' '.join(cmd)}: {proc.stdout[:200]}") from exc
 
     # --- discovery + dispatch --------------------------------------------
+
+    def whoami(self) -> dict[str, Any]:
+        """Return the live registered ACP identity (read-only). Mock-safe."""
+        if self.mock:
+            return dict(REGISTERED_AGENT, mock=True)
+        return self._run("agent", "whoami")
 
     def browse(self, query: str, top_k: int = 5) -> list[dict[str, Any]]:
         if self.mock:
