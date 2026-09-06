@@ -3,173 +3,175 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Meritor — Credit Memory for Agents</title>
-<meta name="description" content="A load-bearing credit memory for autonomous agents. Recall a counterparty's history, set a collateral tier, move real money on Base — or refuse.">
+<title>Meritor — A Foundation of Memory for Agent Credit</title>
+<meta name="description" content="Meritor turns persistent memory into a load-bearing credit engine for autonomous agents. Recall a counterparty's history, set a collateral tier, and settle on Base — or refuse.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
 <style>
   :root{
-    color-scheme:dark;
-    --bg:#0b111a; --bg-2:#0a0f17; --panel:#121b28; --panel-2:#0e1621; --inset:#0a1019;
-    --line:#213043; --line-2:#31465f;
-    --ink:#e9eff7; --mid:#a4b4c8; --dim:#65768c;
-    --accent:#4f8dfb; --cyan:#63dbe6; --accent-soft:rgba(79,141,251,.13); --accent-line:rgba(79,141,251,.4);
-    --good:#37c383; --good-soft:rgba(55,195,131,.12); --bad:#f0576e; --bad-soft:rgba(240,87,110,.12);
-    --t-bronze:#c47a45; --t-silver:#aab6c2; --t-gold:#e3b73f; --t-platinum:#63dbe6;
+    color-scheme: light;
+    --paper:#f5efe4; --paper-2:#efe6d6; --paper-3:#e9dfcc;
+    --ink:#241f1b; --mid:#6a6055; --dim:#a2988a; --line:#e3d9c7; --line-2:#d6c9b2;
+    --accent:#33507a;         /* deep dusty blue — bridges to the desk, off the terracotta cliché */
+    --accent-soft:#e8ecf3;
+    --clay:#9c5a3c;           /* warm secondary, used only in hairlines/eyebrows */
+    --coal:#1b1713; --coal-2:#241f19; --coal-line:#3a332a; --coal-ink:#efe7d8; --coal-dim:#a99e8b;
+    --cyan:#63dbe6;
+    --good:#3f8f5f; --bad:#c0492f;
+    --serif:"Fraunces",Georgia,serif;
     --sans:"IBM Plex Sans",system-ui,-apple-system,sans-serif;
-    --disp:"Archivo",var(--sans); --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
-    --r:16px; --r-sm:10px; --maxw:1120px;
+    --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+    --maxw:1140px;
   }
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
-  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased}
   @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.6;
+    font-size:16.5px;-webkit-font-smoothing:antialiased}
   a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 26px}
   .mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
-  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
-  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
-  h2{font-family:var(--disp);font-weight:800;letter-spacing:-.02em;text-wrap:balance}
-  :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:5px}
+  .eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--clay)}
+  h1,h2,h3{font-family:var(--serif);font-weight:500;letter-spacing:-.012em;text-wrap:balance;margin:0}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+
+  /* buttons */
+  .btn{display:inline-flex;align-items:center;gap:9px;font-family:var(--sans);font-weight:600;font-size:14.5px;
+    padding:12px 22px;border-radius:999px;cursor:pointer;border:1px solid transparent;transition:.16s;letter-spacing:.01em}
+  .btn-dark{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .btn-dark:hover{background:#000}
+  .btn-ghost{background:transparent;color:var(--ink);border-color:var(--line-2)}
+  .btn-ghost:hover{border-color:var(--ink)}
 
   /* nav */
-  nav{position:sticky;top:0;z-index:20;background:rgba(11,17,26,.82);backdrop-filter:blur(12px);
-    border-bottom:1px solid var(--line)}
-  .nav-in{max-width:var(--maxw);margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px}
-  .logo{display:flex;align-items:center;gap:10px;font-family:var(--disp);font-weight:800;font-size:19px;letter-spacing:-.01em}
-  .logo svg{width:20px;height:23px}
-  .nav-links{display:flex;align-items:center;gap:26px}
-  .nav-links a{font-size:13.5px;color:var(--mid)}
+  nav{position:sticky;top:0;z-index:30;background:rgba(245,239,228,.86);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  .nav-in{max-width:var(--maxw);margin:0 auto;padding:15px 26px;display:flex;align-items:center;justify-content:space-between;gap:18px}
+  .brand{display:flex;align-items:center;gap:11px;font-family:var(--serif);font-weight:600;font-size:21px;letter-spacing:-.01em}
+  .brand svg{width:19px;height:22px}
+  .nav-links{display:flex;align-items:center;gap:28px}
+  .nav-links a{font-size:14px;color:var(--mid)}
   .nav-links a:hover{color:var(--ink)}
-  .btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--sans);font-weight:600;font-size:14px;
-    padding:10px 18px;border-radius:10px;cursor:pointer;border:1px solid transparent;transition:.16s}
-  .btn-primary{background:var(--accent);color:#04101f;border-color:var(--accent)}
-  .btn-primary:hover{background:#6b9ffb}
-  .btn-ghost{background:transparent;color:var(--ink);border-color:var(--line-2)}
-  .btn-ghost:hover{border-color:var(--accent-line);background:var(--accent-soft)}
-  .nav-links .btn{font-size:13px;padding:8px 15px}
-  @media (max-width:720px){.nav-links a:not(.btn){display:none}}
+  @media (max-width:760px){.nav-links a:not(.btn){display:none}}
 
   /* hero */
-  .hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line)}
-  .hero::before{content:"";position:absolute;inset:0;z-index:0;
-    background:radial-gradient(900px 420px at 78% -8%,rgba(79,141,251,.16),transparent 60%),
-               radial-gradient(700px 380px at 8% 108%,rgba(99,219,230,.08),transparent 60%)}
-  .hero-in{position:relative;z-index:1;max-width:var(--maxw);margin:0 auto;padding:74px 24px 68px;
-    display:grid;grid-template-columns:1.06fr .94fr;gap:52px;align-items:center}
-  .hero h1{font-family:var(--disp);font-weight:900;font-size:clamp(38px,5.6vw,60px);line-height:1.02;
-    letter-spacing:-.03em;margin:16px 0 0;text-wrap:balance}
-  .hero h1 .accent{color:var(--cyan)}
-  .hero .lede{color:var(--mid);font-size:18px;margin:20px 0 30px;max-width:34ch}
-  .hero .cta{display:flex;gap:12px;flex-wrap:wrap}
-  .hero .undernote{margin-top:20px;font-family:var(--mono);font-size:12px;color:var(--dim);display:flex;gap:8px;align-items:center}
-  .hero .undernote .d{width:6px;height:6px;border-radius:50%;background:var(--good)}
-
-  /* hero ticket demo */
-  .ticket{background:var(--panel);border:1px solid var(--line-2);border-radius:var(--r);padding:6px;
-    box-shadow:0 30px 60px -30px rgba(0,0,0,.7)}
-  .ticket .switch{display:flex;gap:4px;background:var(--inset);border-radius:12px;padding:4px;margin:6px 6px 0}
-  .ticket .switch button{flex:1;font-family:var(--sans);font-weight:600;font-size:12.5px;color:var(--mid);
-    background:transparent;border:0;padding:9px;border-radius:9px;cursor:pointer;transition:.16s}
-  .ticket .switch button[aria-pressed="true"]{background:var(--panel-2);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line-2)}
-  .ticket .switch button.off[aria-pressed="true"]{color:var(--bad);box-shadow:inset 0 0 0 1px rgba(240,87,110,.5)}
-  .ticket .body{padding:20px 20px 22px}
-  .ticket .req-row{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;color:var(--dim)}
-  .ticket .req-row b{font-family:var(--mono);color:var(--ink);font-size:15px;font-weight:500}
-  .ticket .stamp{font-family:var(--disp);font-weight:800;font-size:34px;letter-spacing:.02em;margin:16px 0 4px;transition:.2s}
-  .ticket .stamp.ok{color:var(--good)} .ticket .stamp.no{color:var(--bad)}
-  .ticket .terms{display:flex;gap:22px;margin-top:14px;padding-top:16px;border-top:1px solid var(--line)}
-  .ticket .term .k{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
-  .ticket .term .v{font-family:var(--mono);font-size:17px;margin-top:3px}
-  .ticket .why{margin-top:16px;font-size:12.5px;color:var(--mid);line-height:1.5;min-height:38px}
-  .ticket .why b{color:var(--ink);font-weight:600}
-  @media (max-width:880px){.hero-in{grid-template-columns:1fr;gap:36px;padding:52px 24px 48px}.hero .lede{max-width:48ch}}
+  .hero{position:relative;overflow:hidden}
+  .hero-in{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;padding:66px 0 78px}
+  .hero .eyebrow{margin-bottom:22px}
+  .hero h1{font-size:clamp(40px,5.6vw,66px);line-height:1.04;font-weight:500}
+  .hero h1 em{font-style:italic;color:var(--accent)}
+  .hero .lede{color:var(--mid);font-size:19px;margin:26px 0 32px;max-width:36ch;line-height:1.55}
+  .hero .cta{display:flex;gap:13px;flex-wrap:wrap}
+  .hero .proofline{margin-top:26px;font-family:var(--mono);font-size:12.5px;color:var(--dim);display:flex;align-items:center;gap:9px}
+  .hero .proofline .d{width:7px;height:7px;border-radius:50%;background:var(--good)}
+  .imgframe{position:relative;border-radius:18px;overflow:hidden;
+    background:radial-gradient(120% 100% at 30% 15%, #fbf6ec 0%, #f3e6d3 42%, #e9c9ad 78%, #d9a888 100%);
+    box-shadow:0 40px 80px -44px rgba(90,60,40,.55), inset 0 0 0 1px rgba(255,255,255,.4)}
+  .imgframe--hero{aspect-ratio:4/5}
+  .imgframe img{width:100%;height:100%;object-fit:cover}
+  .imgframe--hero .placeholder{position:absolute;inset:0;display:grid;place-items:center;color:#b98a63;font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase}
+  @media (max-width:860px){.hero-in{grid-template-columns:1fr;gap:34px;padding:44px 0 54px}.hero .lede{max-width:52ch}}
 
   /* section shells */
-  section{padding:76px 0;border-bottom:1px solid var(--line)}
-  .sec-head{max-width:64ch;margin-bottom:44px}
-  .sec-head h2{font-size:clamp(26px,3.4vw,36px);margin:12px 0 0}
-  .sec-head p{color:var(--mid);font-size:16.5px;margin:16px 0 0}
+  section{padding:82px 0;border-top:1px solid var(--line)}
+  .sec-eyebrow{margin-bottom:16px}
+  .sec-lead{font-size:clamp(26px,3.4vw,40px);line-height:1.12;max-width:20ch}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:48px}
+  @media (max-width:820px){.two{grid-template-columns:1fr;gap:24px}}
+  .manifesto .body{color:var(--mid);font-size:17px;line-height:1.65}
+  .manifesto .body p{margin:0 0 16px}
+  .manifesto .body .lead-in{color:var(--ink);font-family:var(--serif);font-size:22px;line-height:1.4}
 
-  /* problem stat */
-  .stat-row{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-  .stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:28px}
-  .stat .big{font-family:var(--disp);font-weight:800;font-size:52px;letter-spacing:-.02em;line-height:1}
-  .stat .big.bad{color:var(--bad)} .stat .big.good{color:var(--good)}
-  .stat .cap{color:var(--mid);font-size:14.5px;margin-top:12px;max-width:38ch}
-  @media (max-width:720px){.stat-row{grid-template-columns:1fr}.stat .big{font-size:42px}}
+  /* numbered beats */
+  .beat{display:grid;grid-template-columns:0.92fr 1.08fr;gap:48px;align-items:center;padding:34px 0}
+  .beat + .beat{border-top:1px solid var(--line)}
+  .beat .num{font-family:var(--mono);font-size:12px;color:var(--clay);letter-spacing:.14em;display:flex;gap:14px;align-items:center}
+  .beat .num::after{content:"";flex:1;height:1px;background:var(--line-2);max-width:120px}
+  .beat h3{font-size:30px;margin:16px 0 12px;font-weight:500}
+  .beat p{color:var(--mid);font-size:16px;margin:0}
+  .beat .tag{margin-top:16px;font-family:var(--mono);font-size:11.5px;color:var(--dim);letter-spacing:.05em}
+  .beat--flip .panel{order:-1}
+  @media (max-width:820px){.beat{grid-template-columns:1fr;gap:22px}.beat--flip .panel{order:0}}
 
-  /* steps */
-  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-  .step{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:26px 24px;position:relative}
-  .step .n{font-family:var(--mono);font-size:12px;color:var(--accent);letter-spacing:.1em}
-  .step h3{font-family:var(--disp);font-weight:700;font-size:19px;margin:14px 0 8px;letter-spacing:-.01em}
-  .step p{color:var(--mid);font-size:14px;margin:0}
-  .step .tag{font-family:var(--mono);font-size:11px;color:var(--dim);margin-top:14px;display:block}
-  @media (max-width:820px){.steps{grid-template-columns:1fr}}
+  /* dark product panel */
+  .panel{border-radius:16px;overflow:hidden;background:var(--coal);border:1px solid var(--coal-line);
+    box-shadow:0 30px 60px -40px rgba(0,0,0,.6)}
+  .panel img{width:100%;display:block}
+  .panel--stone{aspect-ratio:1/1;background:
+    radial-gradient(120% 120% at 30% 20%, #efe7d6, #ddccb2 60%, #c9ب59a 100%);}
+  .panel--stone{background:radial-gradient(120% 120% at 30% 20%, #efe7d6, #ddccb2 60%, #cbb59a 100%)}
+  .panel--stone .placeholder{aspect-ratio:1/1;display:grid;place-items:center;color:#a68a67;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+  /* onchain receipt card (crafted, real data) */
+  .receipt{background:var(--coal);border:1px solid var(--coal-line);border-radius:16px;padding:26px;color:var(--coal-ink)}
+  .receipt .chip{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;color:var(--cyan);
+    background:rgba(99,219,230,.1);padding:5px 11px;border-radius:999px;margin-bottom:18px}
+  .receipt .kv{display:flex;flex-direction:column;gap:11px}
+  .receipt .kv .r{display:flex;justify-content:space-between;gap:14px;align-items:baseline;font-size:13px}
+  .receipt .kv .k{color:var(--coal-dim)} .receipt .kv .v{font-family:var(--mono);font-size:12.5px;word-break:break-all;text-align:right}
+  .receipt .links{display:flex;gap:9px;margin-top:18px;flex-wrap:wrap}
+  .receipt .links a{font-family:var(--mono);font-size:12px;color:var(--cyan);border:1px solid rgba(99,219,230,.35);padding:7px 12px;border-radius:8px}
 
-  /* deletion test */
-  .litmus{display:grid;grid-template-columns:1fr 1fr;gap:0;background:var(--panel);border:1px solid var(--line);
-    border-radius:var(--r);overflow:hidden}
-  .litmus .half{padding:32px}
-  .litmus .half:first-child{border-right:1px solid var(--line)}
-  .litmus .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase}
-  .litmus .on .lbl{color:var(--good)} .litmus .off .lbl{color:var(--bad)}
-  .litmus h3{font-family:var(--disp);font-weight:800;font-size:25px;margin:14px 0 10px}
-  .litmus p{color:var(--mid);font-size:14px;margin:0}
-  .litmus code{font-family:var(--mono);font-size:12.5px;color:var(--cyan);background:var(--inset);
-    padding:2px 7px;border-radius:6px}
-  @media (max-width:720px){.litmus{grid-template-columns:1fr}.litmus .half:first-child{border-right:0;border-bottom:1px solid var(--line)}}
+  /* before / after */
+  .ba{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .ba .card{border-radius:16px;overflow:hidden;border:1px solid var(--line);background:var(--paper-2)}
+  .ba .card .cap{padding:16px 18px}
+  .ba .card .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+  .ba .without .lbl{color:var(--bad)} .ba .with .lbl{color:var(--good)}
+  .ba .card h4{font-family:var(--serif);font-weight:500;font-size:20px;margin:8px 0 6px}
+  .ba .card p{margin:0;color:var(--mid);font-size:13.5px}
+  .ba .shot{background:var(--coal);border-bottom:1px solid var(--line)}
+  .ba .shot img{width:100%;display:block}
+  @media (max-width:820px){.ba{grid-template-columns:1fr}}
 
   /* primitives */
-  .prims{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-  .prim{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-sm);padding:20px}
-  .prim .pk{font-family:var(--mono);font-size:12px;color:var(--cyan);letter-spacing:.02em}
-  .prim h4{font-family:var(--disp);font-weight:700;font-size:16px;margin:9px 0 6px}
-  .prim p{color:var(--mid);font-size:13px;margin:0;line-height:1.5}
+  .prims{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-top:36px}
+  .prim{background:var(--paper);padding:26px 24px}
+  .prim .pk{font-family:var(--mono);font-size:11.5px;color:var(--accent);letter-spacing:.04em}
+  .prim h4{font-family:var(--serif);font-weight:500;font-size:19px;margin:11px 0 8px}
+  .prim p{color:var(--mid);font-size:14px;margin:0;line-height:1.55}
   @media (max-width:820px){.prims{grid-template-columns:1fr 1fr}}
   @media (max-width:520px){.prims{grid-template-columns:1fr}}
 
   /* stacks */
-  .stack-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-  .sk{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:24px;display:flex;flex-direction:column;gap:10px}
-  .sk .top{display:flex;align-items:center;justify-content:space-between}
-  .sk h4{font-family:var(--disp);font-weight:700;font-size:18px;margin:0}
-  .sk .st{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;padding:4px 8px;border-radius:5px}
-  .st.core{color:var(--accent);background:var(--accent-soft)} .st.live{color:var(--good);background:var(--good-soft)}
-  .st.wired{color:var(--mid);background:var(--panel-2)}
-  .sk p{color:var(--mid);font-size:13.5px;margin:0}
-  @media (max-width:820px){.stack-row{grid-template-columns:1fr}}
+  .stacks{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:36px}
+  .stack{background:var(--paper-2);border:1px solid var(--line);border-radius:16px;padding:26px}
+  .stack .top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+  .stack h4{font-family:var(--serif);font-weight:500;font-size:21px;margin:0}
+  .stack .st{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;padding:4px 9px;border-radius:999px}
+  .st.core{color:var(--accent);background:var(--accent-soft)} .st.live{color:var(--good);background:#e6efe8}
+  .stack p{color:var(--mid);font-size:14px;margin:0 0 14px}
+  .stack .fact{font-family:var(--mono);font-size:11.5px;color:var(--ink);border-top:1px solid var(--line);padding-top:12px}
+  .stack .fact a{color:var(--accent);border-bottom:1px solid var(--accent-soft)}
+  @media (max-width:820px){.stacks{grid-template-columns:1fr}}
 
-  /* proof */
-  .proof{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:center}
-  .proof-card{background:var(--panel);border:1px solid var(--line-2);border-radius:var(--r);padding:26px}
-  .proof-card .badge{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;
-    color:var(--good);background:var(--good-soft);padding:5px 11px;border-radius:999px;margin-bottom:16px}
-  .proof-card .kv{display:flex;flex-direction:column;gap:10px}
-  .proof-card .kv .r{display:flex;justify-content:space-between;gap:14px;align-items:baseline;font-size:13px}
-  .proof-card .kv .k{color:var(--dim)} .proof-card .kv .v{font-family:var(--mono);font-size:12.5px;text-align:right;word-break:break-all}
-  .proof-card .links{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
-  .proof-card .links a{font-family:var(--mono);font-size:12.5px;color:var(--accent);border:1px solid var(--accent-line);
-    padding:8px 13px;border-radius:8px}
-  .proof-card .links a:hover{background:var(--accent-soft)}
-  .proof-copy h2{font-size:clamp(24px,3vw,32px);margin:12px 0 0}
-  .proof-copy p{color:var(--mid);font-size:15.5px;margin:16px 0 0}
-  @media (max-width:820px){.proof{grid-template-columns:1fr}}
+  /* evidence (dark) */
+  .evidence{background:var(--coal);color:var(--coal-ink);border-top:1px solid var(--coal-line)}
+  .evidence .eyebrow{color:var(--cyan)}
+  .evidence h2{color:var(--coal-ink)}
+  .evidence .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:38px}
+  .evidence .stat .n{font-family:var(--serif);font-weight:500;font-size:40px;letter-spacing:-.02em}
+  .evidence .stat .l{color:var(--coal-dim);font-size:13px;margin-top:8px;line-height:1.4}
+  .evidence code{font-family:var(--mono);background:#0f0c09;color:var(--cyan);padding:2px 7px;border-radius:6px;font-size:12.5px}
+  .evidence .repro{margin-top:34px;font-family:var(--mono);font-size:13px;color:var(--coal-dim);background:#0f0c09;
+    border:1px solid var(--coal-line);border-radius:12px;padding:16px 18px}
+  .evidence .repro b{color:var(--coal-ink)}
+  @media (max-width:820px){.evidence .grid{grid-template-columns:1fr 1fr}}
 
-  /* architecture */
-  .arch{background:var(--panel-2);border:1px solid var(--line);border-radius:var(--r);padding:14px;overflow-x:auto}
-  .arch svg{display:block;min-width:640px;margin:0 auto}
+  /* close */
+  .close{position:relative;padding:0;border:0}
+  .close .band{position:relative;min-height:440px;display:grid;place-items:center;text-align:center;overflow:hidden;
+    background:linear-gradient(180deg,#f0d9bf,#e7b58f)}
+  .close .band img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+  .close .band::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(28,20,14,.15),rgba(28,20,14,.45));z-index:1}
+  .close .inner{position:relative;z-index:2;color:#fff;padding:70px 26px}
+  .close h2{color:#fff;font-size:clamp(30px,4.4vw,50px)}
+  .close p{color:rgba(255,255,255,.9);font-size:18px;max-width:46ch;margin:18px auto 30px}
+  .close .btn-dark{background:#fff;color:var(--ink);border-color:#fff}
+  .close .btn-ghost{color:#fff;border-color:rgba(255,255,255,.6)}
 
-  /* closing */
-  .close{text-align:center;border-bottom:0;background:
-    radial-gradient(700px 300px at 50% 120%,rgba(79,141,251,.12),transparent 60%)}
-  .close h2{font-size:clamp(28px,4vw,44px)}
-  .close p{color:var(--mid);font-size:17px;max-width:52ch;margin:18px auto 30px}
-  .close .cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-  footer{padding:30px 0 46px}
-  .foot-in{max-width:var(--maxw);margin:0 auto;padding:0 24px;display:flex;justify-content:space-between;
-    gap:16px;flex-wrap:wrap;align-items:center;font-size:12.5px;color:var(--dim)}
+  footer{padding:34px 0 50px;border-top:1px solid var(--line)}
+  .foot-in{max-width:var(--maxw);margin:0 auto;padding:0 26px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center;color:var(--dim);font-size:13px}
   .foot-in .mono{color:var(--mid)}
 </style>
 </head>
@@ -177,96 +179,101 @@
 
 <nav>
   <div class="nav-in">
-    <a class="logo" href="#top">
-      <svg viewBox="0 0 26 30" aria-hidden="true"><path d="M13 1 L24 5 V15 C24 23 19 27 13 29 C7 27 2 23 2 15 V5 Z" fill="none" stroke="#4f8dfb" stroke-width="1.6"/><path d="M8 15 l3.4 3.6 L18 10" fill="none" stroke="#63dbe6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <a class="brand" href="#top">
+      <svg viewBox="0 0 26 30" aria-hidden="true"><path d="M13 1 L24 5 V15 C24 23 19 27 13 29 C7 27 2 23 2 15 V5 Z" fill="none" stroke="#33507a" stroke-width="1.7"/><path d="M8 15 l3.4 3.6 L18 10" fill="none" stroke="#9c5a3c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       Meritor
     </a>
     <div class="nav-links">
+      <a href="#thesis">Thesis</a>
       <a href="#how">How it works</a>
-      <a href="#test">Deletion test</a>
-      <a href="#proof">Onchain proof</a>
-      <a class="btn btn-primary" href="/desk">Open the desk &#8594;</a>
+      <a href="#proof">Proof</a>
+      <a class="btn btn-dark" href="/desk">Open the desk</a>
     </div>
   </div>
 </nav>
 
-<div id="top" class="hero">
-  <div class="hero-in">
+<header id="top" class="hero">
+  <div class="wrap hero-in">
     <div>
-      <span class="eyebrow">Sibyl Labs Hackathon &middot; Base &middot; Virtuals</span>
-      <h1>Credit that <span class="accent">remembers</span> who paid it back.</h1>
-      <p class="lede">Meritor turns Sibyl Memory into a load-bearing credit engine for autonomous agents. Recall a counterparty's history, set a collateral tier, and move real money on Base &mdash; or refuse.</p>
+      <div class="eyebrow">Sibyl Memory · Base · Virtuals</div>
+      <h1>A foundation of <em>memory</em> for autonomous credit.</h1>
+      <p class="lede">Agents that remember who kept their word can lend without collateral. Meritor turns persistent memory into a load-bearing credit engine — and settles the decision on Base.</p>
       <div class="cta">
-        <a class="btn btn-primary" href="/desk">Open the credit desk &#8594;</a>
-        <a class="btn btn-ghost" href="#proof">See it live on Base</a>
+        <a class="btn btn-dark" href="/desk">Open the live desk →</a>
+        <a class="btn btn-ghost" href="#proof">See it onchain</a>
       </div>
-      <div class="undernote"><span class="d"></span> A real EAS attestation is live on Base mainnet, block 50,862,970.</div>
+      <div class="proofline"><span class="d"></span> A real credit attestation is live on Base mainnet · block 50,862,970</div>
     </div>
-
-    <div class="ticket" aria-label="The same credit request, decided by memory">
-      <div class="switch" role="group" aria-label="Sibyl Memory">
-        <button id="tOn" aria-pressed="true" onclick="setMem(true)">Memory online</button>
-        <button id="tOff" class="off" aria-pressed="false" onclick="setMem(false)">Memory erased</button>
-      </div>
-      <div class="body">
-        <div class="req-row"><span>Counterparty <b>0xALPHA</b> requests</span> <b>$50 USDC</b></div>
-        <div class="stamp ok" id="tStamp">APPROVED</div>
-        <div class="terms">
-          <div class="term"><div class="k">Tier</div><div class="v" id="tTier" style="color:var(--t-platinum)">PLATINUM</div></div>
-          <div class="term"><div class="k">Collateral</div><div class="v" id="tCol">0%</div></div>
-          <div class="term"><div class="k">Released</div><div class="v" id="tRel">$50.00</div></div>
-        </div>
-        <div class="why" id="tWhy"><b>Recalled across 4 sessions.</b> A clean repayment record unlocks uncollateralized credit.</div>
-      </div>
+    <div class="imgframe imgframe--hero">
+      <img src="/assets/meritor-hero.png" alt="A classical marble bust of a Sibyl — memory rendered in stone" onerror="this.remove()">
+      <div class="placeholder">the sibyl · memory in marble</div>
     </div>
   </div>
-</div>
+</header>
 
-<section id="problem" class="wrap-sec">
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="eyebrow">The problem</span>
-      <h2>An agent that forgets has to demand collateral from everyone.</h2>
-      <p>Onchain agents can't price trust they can't remember. With no durable record of who delivered and who defaulted, every counterparty is a stranger every session &mdash; so lending and job delegation fall back on over-collateralization, and an entire class of agent-to-agent commerce never happens.</p>
+<section id="thesis" class="manifesto">
+  <div class="wrap two">
+    <div>
+      <div class="eyebrow sec-eyebrow">Our thesis</div>
+      <h2 class="sec-lead">Trust is a thing you remember, not a thing you assume.</h2>
     </div>
-    <div class="stat-row">
-      <div class="stat">
-        <div class="big bad">150%+</div>
-        <div class="cap">Collateral a memory-less agent must demand from an unknown counterparty &mdash; every time, forever.</div>
-      </div>
-      <div class="stat">
-        <div class="big good">0%</div>
-        <div class="cap">Collateral Meritor extends to a counterparty whose clean repayment record it recalls across sessions.</div>
-      </div>
+    <div class="body">
+      <p class="lead-in">A lender that forgets its borrowers has only one safe policy: demand more collateral than it lends, from everyone, forever.</p>
+      <p>That is the state of onchain agent commerce today. Because agents can't durably recall who delivered and who defaulted, uncollateralized credit and high-value delegation simply don't happen between them.</p>
+      <p>Meritor changes the input, not the interface. It persists every settled obligation to Sibyl Memory, recalls it in a fresh session, and lets that record set the terms. Memory isn't a cache in front of the logic — it <em>is</em> the creditworthiness. Remove it and the engine has nothing to price, and says so.</p>
     </div>
   </div>
 </section>
 
 <section id="how">
   <div class="wrap">
-    <div class="sec-head">
-      <span class="eyebrow">How it works</span>
-      <h2>Memory becomes a tier. The tier becomes money.</h2>
-      <p>Meritor sits on the critical path between what an agent remembers and what it's willing to pay. Three moves, every one anchored in Sibyl Memory.</p>
+    <div class="eyebrow sec-eyebrow">How it works</div>
+    <h2 class="sec-lead">Memory becomes a tier. The tier becomes money.</h2>
+
+    <div class="beat" style="margin-top:22px">
+      <div>
+        <div class="num">00 / 01 &nbsp;PERSIST</div>
+        <h3>Every obligation, etched to memory</h3>
+        <p>After each ACP job and each Base settlement, Meritor writes a signed credit event — SLA outcome, repayment timing, dispute flags, the onchain tx — to an append-only journal in Sibyl Memory. Nothing is inferred later that wasn't recorded then.</p>
+        <div class="tag">entities · events · state</div>
+      </div>
+      <div class="panel panel--stone">
+        <img src="/assets/meritor-lattice.png" alt="A memory lattice carved in marble" onerror="this.parentElement.classList.add('is-empty');this.remove()">
+        <div class="placeholder">the ledger · records in stone</div>
+      </div>
     </div>
-    <div class="steps">
-      <div class="step">
-        <span class="n">01 / PERSIST</span>
-        <h3>Write the record</h3>
-        <p>After every ACP job and Base settlement, Meritor writes a signed credit event &mdash; SLA outcome, repayment timing, dispute flags, the onchain tx &mdash; to an append-only journal in Sibyl Memory.</p>
-        <span class="tag">entities &middot; events &middot; state</span>
+
+    <div class="beat beat--flip">
+      <div>
+        <div class="num">00 / 02 &nbsp;RECALL</div>
+        <h3>A fresh session, a full history</h3>
+        <p>A new process holds nothing in memory-the-RAM sense. On a credit request it recalls the counterparty and replays the journal into an explainable 0–1000 score — and can reconstruct that score as it stood at any past instant.</p>
+        <div class="tag">recall · semantic search · temporal replay</div>
       </div>
-      <div class="step">
-        <span class="n">02 / RECALL</span>
-        <h3>Reconstruct the score</h3>
-        <p>A fresh session holds nothing in RAM. On a request it recalls the counterparty and replays the journal into an explainable 0&ndash;1000 score &mdash; and can rebuild that score as of any past instant.</p>
-        <span class="tag">recall &middot; temporal replay</span>
+      <div class="panel">
+        <img src="/assets/desk-online.png" alt="The Meritor credit desk recalling a PLATINUM counterparty">
       </div>
-      <div class="step">
-        <span class="n">03 / DECIDE</span>
-        <h3>Move the money</h3>
-        <p>The score sets a collateral tier that gates a real USDC action on Base and publishes the tier as a portable EAS attestation. Erase the memory and the same request is refused.</p>
-        <span class="tag">tier &rarr; Base &rarr; write-back</span>
+    </div>
+
+    <div class="beat">
+      <div>
+        <div class="num">00 / 03 &nbsp;DECIDE</div>
+        <h3>Priced, settled, and published</h3>
+        <p>The score sets a collateral tier that gates a real USDC action on Base and publishes the tier as a portable EAS attestation other agents can verify. The onchain artifact is written back to memory as provenance — closing the loop.</p>
+        <div class="tag">tier → Base → write-back</div>
+      </div>
+      <div class="receipt">
+        <span class="chip"><span style="width:7px;height:7px;border-radius:50%;background:var(--cyan);display:inline-block"></span> Base mainnet · confirmed</span>
+        <div class="kv">
+          <div class="r"><span class="k">Claim</span><span class="v">0xALPHA → PLATINUM (856)</span></div>
+          <div class="r"><span class="k">Attestation</span><span class="v">0x66c791…9a0e2a</span></div>
+          <div class="r"><span class="k">Transaction</span><span class="v">0xfcb465…13110f61</span></div>
+          <div class="r"><span class="k">Block</span><span class="v">50,862,970</span></div>
+        </div>
+        <div class="links">
+          <a href="https://base.easscan.org/attestation/view/0x66c791a420a61bcd3d33bf6c8ba8c6fe54b8dcdfe13852c8da7077bfdd9a0e2a" target="_blank" rel="noopener">View on EAS ↗</a>
+          <a href="https://basescan.org/tx/0xfcb465afde7eecb91727fec2c5315560ab374f9fad3ae8873db4ce5b13110f61" target="_blank" rel="noopener">Basescan ↗</a>
+        </div>
       </div>
     </div>
   </div>
@@ -274,21 +281,17 @@
 
 <section id="test">
   <div class="wrap">
-    <div class="sec-head">
-      <span class="eyebrow">The load-bearing proof</span>
-      <h2>The deletion test</h2>
-      <p>Memory is load-bearing only if removing it breaks the product. Meritor is built so it does &mdash; there is no fallback that quietly keeps working. This is a command in the repo, not a claim in a slide.</p>
-    </div>
-    <div class="litmus">
-      <div class="half on">
-        <span class="lbl">Memory online</span>
-        <h3>PLATINUM &middot; 0% collateral</h3>
-        <p>Meritor recalls 24 clean credit events across 4 sessions, scores the counterparty into the top tier, and releases <code>$50 USDC</code> uncollateralized on Base.</p>
+    <div class="eyebrow sec-eyebrow">The load-bearing proof</div>
+    <h2 class="sec-lead">The same request, before and after memory.</h2>
+    <p style="color:var(--mid);max-width:52ch;margin:16px 0 0">Memory is load-bearing only if removing it breaks the product. On the live desk, one switch erases the Sibyl database — and the whole book collapses to 0-trust.</p>
+    <div class="ba" style="margin-top:34px">
+      <div class="card with">
+        <div class="shot"><img src="/assets/desk-online.png" alt="Meritor desk with memory online"></div>
+        <div class="cap"><div class="lbl">Memory online</div><h4>PLATINUM · 0% collateral</h4><p>A clean multi-session record is recalled; the top tier releases $50 uncollateralized on Base.</p></div>
       </div>
-      <div class="half off">
-        <span class="lbl">After <code>meritor wipe</code></span>
-        <h3>UNKNOWN &middot; denied</h3>
-        <p>An unreachable memory raises rather than returning an empty profile &mdash; because an empty profile reads as "clean stranger." The engine fails closed: 150% collateral, request denied.</p>
+      <div class="card without">
+        <div class="shot"><img src="/assets/desk-wiped.png" alt="Meritor desk after the memory is erased"></div>
+        <div class="cap"><div class="lbl">After the deletion test</div><h4>UNKNOWN · denied</h4><p>The database is gone; the engine fails closed. 150% collateral, request denied. Nothing else changed.</p></div>
       </div>
     </div>
   </div>
@@ -296,143 +299,78 @@
 
 <section id="primitives">
   <div class="wrap">
-    <div class="sec-head">
-      <span class="eyebrow">Memory, used properly</span>
-      <h2>Six primitives, not a key-value cache.</h2>
-      <p>The credit engine leans on Sibyl Memory as a structured substrate. Recall alone is table stakes; the coordination and dynamic-storage patterns are where the work is.</p>
-    </div>
+    <div class="eyebrow sec-eyebrow">Memory, used properly</div>
+    <h2 class="sec-lead">One layer, under every decision.</h2>
     <div class="prims">
-      <div class="prim"><div class="pk">entities</div><h4>Counterparty profiles</h4><p>Each agent's live credit profile, with its risk tier mirrored into entity status for portfolio sweeps by band.</p></div>
-      <div class="prim"><div class="pk">events</div><h4>The credit journal</h4><p>An append-only record of every event &mdash; what makes the score reconstructible, not merely current.</p></div>
-      <div class="prim"><div class="pk">semantic search</div><h4>Find the risk</h4><p>FTS5 search across profiles: "which counterparties carry a dispute" without scanning the whole book.</p></div>
-      <div class="prim"><div class="pk">temporal</div><h4>Time-travel</h4><p>Replay the score to any past instant, so a rejected agent sees the exact evidence held at decision time.</p></div>
-      <div class="prim"><div class="pk">reflection</div><h4>Read the trajectory</h4><p>A consolidation pass derives trend and volatility, capping a deteriorating agent even while its score is still high.</p></div>
-      <div class="prim"><div class="pk">consolidation</div><h4>Durable memos</h4><p>The reflection result is compacted into a memo in reference storage and read back automatically next session.</p></div>
+      <div class="prim"><div class="pk">entities</div><h4>Counterparty profiles</h4><p>Each agent's live credit profile, its tier mirrored into status for portfolio sweeps by band.</p></div>
+      <div class="prim"><div class="pk">events</div><h4>The credit journal</h4><p>An append-only record of every obligation — what makes the score reconstructible, not merely current.</p></div>
+      <div class="prim"><div class="pk">search</div><h4>Find the risk</h4><p>Lexical search across profiles: which counterparties carry a dispute, without a full scan.</p></div>
+      <div class="prim"><div class="pk">temporal</div><h4>Time-travel</h4><p>Replay the score to any past instant, so a rejected agent sees the evidence held at decision time.</p></div>
+      <div class="prim"><div class="pk">reflection</div><h4>Read the trajectory</h4><p>Consolidation derives trend and volatility, capping a deteriorating agent while its score is still high.</p></div>
+      <div class="prim"><div class="pk">consolidation</div><h4>Durable memos</h4><p>The reflection is compacted into a memo in reference storage, read back automatically next session.</p></div>
     </div>
   </div>
 </section>
 
 <section id="stacks">
   <div class="wrap">
-    <div class="sec-head">
-      <span class="eyebrow">Partner stacks</span>
-      <h2>Every stack does real work in the demo.</h2>
-    </div>
-    <div class="stack-row">
-      <div class="sk"><div class="top"><h4>Sibyl Memory</h4><span class="st core">core</span></div><p>The mandatory, load-bearing substrate. A local SQLite store the agent owns &mdash; which is why deleting it is a real experiment, not a mocked failure.</p></div>
-      <div class="sk"><div class="top"><h4>Base &middot; EAS</h4><span class="st live">live</span></div><p>A recalled tier is published to Base as a portable EAS attestation and can release USDC. The attestation UID is written back to memory as provenance.</p></div>
-      <div class="sk"><div class="top"><h4>Virtuals ACP</h4><span class="st wired">wired</span></div><p>Job outcomes on the Agent Commerce Protocol become credit events &mdash; which is where Meritor's SLA history comes from in the first place.</p></div>
-    </div>
-  </div>
-</section>
-
-<section id="proof">
-  <div class="wrap">
-    <div class="proof">
-      <div class="proof-copy">
-        <span class="eyebrow">Onchain proof</span>
-        <h2>Not a claim. A row in EAS on Base mainnet.</h2>
-        <p>Meritor recalled 0xALPHA's history from Sibyl Memory, scored it PLATINUM, and published that tier as an EAS attestation on Base mainnet. Read the attestation back from the contract and it decodes to exactly the recalled state.</p>
-        <p style="font-family:var(--mono);font-size:13px;color:var(--dim)">agentId=0xALPHA &middot; score=856 &middot; tier=PLATINUM &middot; sessions=4</p>
+    <div class="eyebrow sec-eyebrow">Built on</div>
+    <h2 class="sec-lead">Three stacks, each doing real work.</h2>
+    <div class="stacks">
+      <div class="stack">
+        <div class="top"><h4>Sibyl Memory</h4><span class="st core">core</span></div>
+        <p>The mandatory, load-bearing substrate — a local store the agent owns, which is why deleting it is a real experiment, not a mocked failure.</p>
+        <div class="fact">recall · journal · search · temporal · reflection</div>
       </div>
-      <div class="proof-card">
-        <span class="badge"><span style="width:7px;height:7px;border-radius:50%;background:var(--good);display:inline-block"></span> Base mainnet &middot; confirmed</span>
-        <div class="kv">
-          <div class="r"><span class="k">Attestation UID</span><span class="v">0x66c791&hellip;9a0e2a</span></div>
-          <div class="r"><span class="k">Transaction</span><span class="v">0xfcb465&hellip;13110f61</span></div>
-          <div class="r"><span class="k">Block</span><span class="v">50,862,970</span></div>
-          <div class="r"><span class="k">Schema</span><span class="v" style="word-break:normal">string agentId, uint16 score, string tier &hellip;</span></div>
-        </div>
-        <div class="links">
-          <a href="https://base.easscan.org/attestation/view/0x66c791a420a61bcd3d33bf6c8ba8c6fe54b8dcdfe13852c8da7077bfdd9a0e2a" target="_blank" rel="noopener">View on EAS &#8599;</a>
-          <a href="https://basescan.org/tx/0xfcb465afde7eecb91727fec2c5315560ab374f9fad3ae8873db4ce5b13110f61" target="_blank" rel="noopener">Transaction &#8599;</a>
-        </div>
+      <div class="stack">
+        <div class="top"><h4>Base</h4><span class="st live">live</span></div>
+        <p>A recalled tier is published as a portable EAS attestation and can release USDC — settlement other agents can verify.</p>
+        <div class="fact">EAS attestation · <a href="https://basescan.org/tx/0xfcb465afde7eecb91727fec2c5315560ab374f9fad3ae8873db4ce5b13110f61" target="_blank" rel="noopener">tx ↗</a> · ERC-8004 #84921</div>
+      </div>
+      <div class="stack">
+        <div class="top"><h4>Virtuals ACP</h4><span class="st live">live</span></div>
+        <p>Meritor is a registered ACP agent with a live credit-underwriting offering; job outcomes become credit events.</p>
+        <div class="fact">registered agent · offering: meritor_credit_report</div>
       </div>
     </div>
   </div>
 </section>
 
-<section id="arch">
+<section class="evidence">
   <div class="wrap">
-    <div class="sec-head">
-      <span class="eyebrow">Architecture</span>
-      <h2>One substrate, downstream of every decision.</h2>
+    <div class="eyebrow sec-eyebrow">Verifiable, not vibes</div>
+    <h2 class="sec-lead">Every claim on this page has a command behind it.</h2>
+    <div class="grid">
+      <div class="stat"><div class="n">40</div><div class="l">commits of real, incremental history</div></div>
+      <div class="stat"><div class="n">39</div><div class="l">tests, green — including the deletion test</div></div>
+      <div class="stat"><div class="n">#84921</div><div class="l">Meritor's ERC-8004 identity on Base</div></div>
+      <div class="stat"><div class="n">0%→150%</div><div class="l">collateral swing on one memory wipe</div></div>
     </div>
-    <div class="arch">
-      <svg viewBox="0 0 860 260" role="img" aria-label="Meritor architecture: Sibyl Memory feeds the credit engine, which drives Base EAS, Base settlement, and Virtuals ACP, with a write-back to memory.">
-        <defs>
-          <marker id="ah" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M1 1 L8 4.5 L1 8" fill="none" stroke="#4f8dfb" stroke-width="1.4"/></marker>
-          <marker id="ah2" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M1 1 L8 4.5 L1 8" fill="none" stroke="#63dbe6" stroke-width="1.4"/></marker>
-        </defs>
-        <!-- memory -->
-        <rect x="24" y="96" width="176" height="68" rx="12" fill="#0e1621" stroke="#31465f"/>
-        <text x="112" y="124" text-anchor="middle" font-family="Archivo,sans-serif" font-weight="700" font-size="15" fill="#e9eff7">Sibyl Memory</text>
-        <text x="112" y="144" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10.5" fill="#65768c">load-bearing substrate</text>
-        <!-- engine -->
-        <rect x="300" y="90" width="188" height="80" rx="12" fill="#121b28" stroke="#4f8dfb"/>
-        <text x="394" y="122" text-anchor="middle" font-family="Archivo,sans-serif" font-weight="700" font-size="15" fill="#e9eff7">Credit engine</text>
-        <text x="394" y="142" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10.5" fill="#a4b4c8">score &rarr; tier</text>
-        <!-- outputs -->
-        <rect x="616" y="26" width="220" height="54" rx="11" fill="#0e1621" stroke="#213043"/>
-        <text x="636" y="52" font-family="IBM Plex Sans,sans-serif" font-weight="600" font-size="13" fill="#37c383">Base &middot; EAS attestation</text>
-        <text x="636" y="68" font-family="IBM Plex Mono,monospace" font-size="10" fill="#65768c">portable onchain tier</text>
-        <rect x="616" y="104" width="220" height="52" rx="11" fill="#0e1621" stroke="#213043"/>
-        <text x="636" y="128" font-family="IBM Plex Sans,sans-serif" font-weight="600" font-size="13" fill="#e9eff7">Base &middot; USDC settlement</text>
-        <text x="636" y="144" font-family="IBM Plex Mono,monospace" font-size="10" fill="#65768c">release against a tier</text>
-        <rect x="616" y="180" width="220" height="52" rx="11" fill="#0e1621" stroke="#213043"/>
-        <text x="636" y="204" font-family="IBM Plex Sans,sans-serif" font-weight="600" font-size="13" fill="#e3b73f">Virtuals ACP</text>
-        <text x="636" y="220" font-family="IBM Plex Mono,monospace" font-size="10" fill="#65768c">job &rarr; credit event</text>
-        <!-- arrows -->
-        <line x1="200" y1="130" x2="296" y2="130" stroke="#4f8dfb" stroke-width="1.6" marker-end="url(#ah)"/>
-        <text x="248" y="122" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9.5" fill="#65768c">recall</text>
-        <path d="M488 118 C 560 118, 560 53, 612 53" fill="none" stroke="#4f8dfb" stroke-width="1.6" marker-end="url(#ah)"/>
-        <line x1="488" y1="130" x2="612" y2="130" stroke="#4f8dfb" stroke-width="1.6" marker-end="url(#ah)"/>
-        <path d="M488 142 C 560 142, 560 206, 612 206" fill="none" stroke="#4f8dfb" stroke-width="1.6" marker-end="url(#ah)"/>
-        <!-- write-back -->
-        <path d="M700 180 C 700 250, 112 250, 112 168" fill="none" stroke="#63dbe6" stroke-width="1.4" stroke-dasharray="4 4" marker-end="url(#ah2)"/>
-        <text x="400" y="246" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9.5" fill="#63dbe6">write-back: tx hash &amp; attestation UID &rarr; memory</text>
-      </svg>
-    </div>
+    <div class="repro"><b>Reproduce from a clean clone:</b> &nbsp; <code>make reproduce</code> &nbsp;→&nbsp; setup, tests, then the fresh-session recall and deletion test on real Sibyl Memory. Launch this site with <code>make web</code>.</div>
   </div>
 </section>
 
 <section class="close">
-  <div class="wrap">
-    <span class="eyebrow">Try it</span>
-    <h2>Operate the desk. Then erase its memory.</h2>
-    <p>Recall a counterparty, price a request, and run the deletion test yourself &mdash; the whole desk fails closed on one switch.</p>
-    <div class="cta">
-      <a class="btn btn-primary" href="/desk">Open the credit desk &#8594;</a>
-      <a class="btn btn-ghost" href="https://base.easscan.org/attestation/view/0x66c791a420a61bcd3d33bf6c8ba8c6fe54b8dcdfe13852c8da7077bfdd9a0e2a" target="_blank" rel="noopener">View the attestation &#8599;</a>
+  <div class="band">
+    <img src="/assets/meritor-canyon.png" alt="" onerror="this.remove()">
+    <div class="inner">
+      <div class="eyebrow" style="color:rgba(255,255,255,.8)">Try it</div>
+      <h2>Credit that remembers.</h2>
+      <p>Operate the desk, price a request, then erase its memory and watch the whole thing fail closed.</p>
+      <div class="cta" style="display:flex;gap:13px;justify-content:center;flex-wrap:wrap">
+        <a class="btn btn-dark" href="/desk">Open the credit desk →</a>
+        <a class="btn btn-ghost" href="https://base.easscan.org/attestation/view/0x66c791a420a61bcd3d33bf6c8ba8c6fe54b8dcdfe13852c8da7077bfdd9a0e2a" target="_blank" rel="noopener">View the attestation ↗</a>
+      </div>
     </div>
   </div>
 </section>
 
 <footer>
   <div class="foot-in">
-    <span>Meritor &middot; a load-bearing credit memory for autonomous agents</span>
-    <span class="mono">Sibyl Memory &middot; Base &middot; Virtuals &middot; Apache-2.0</span>
+    <span>Meritor · a load-bearing credit memory for autonomous agents</span>
+    <span class="mono">Sibyl Labs Memory Hackathon · Apache-2.0</span>
   </div>
 </footer>
 
-<script>
-  const T = {
-    on:{stamp:"APPROVED",cls:"ok",tier:"PLATINUM",tcol:"var(--t-platinum)",col:"0%",rel:"$50.00",
-        why:"<b>Recalled across 4 sessions.</b> A clean repayment record unlocks uncollateralized credit."},
-    off:{stamp:"DENIED",cls:"no",tier:"UNKNOWN",tcol:"var(--bad)",col:"150%",rel:"$0.00",
-        why:"<b>Memory erased.</b> No record to recall, no basis to price risk &mdash; the engine fails closed to 0-trust."},
-  };
-  function setMem(on){
-    const s=on?T.on:T.off;
-    const stamp=document.getElementById("tStamp");
-    stamp.textContent=s.stamp; stamp.className="stamp "+s.cls;
-    const tier=document.getElementById("tTier"); tier.textContent=s.tier; tier.style.color=s.tcol;
-    document.getElementById("tCol").textContent=s.col;
-    document.getElementById("tRel").textContent=s.rel;
-    document.getElementById("tWhy").innerHTML=s.why;
-    document.getElementById("tOn").setAttribute("aria-pressed",String(on));
-    document.getElementById("tOff").setAttribute("aria-pressed",String(!on));
-  }
-</script>
 </body>
 </html>
