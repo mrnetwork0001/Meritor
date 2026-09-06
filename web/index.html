@@ -47,7 +47,8 @@
 
   /* nav */
   nav{position:sticky;top:0;z-index:30;background:rgba(245,239,228,.86);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
-  .nav-in{max-width:var(--maxw);margin:0 auto;padding:15px 26px;display:flex;align-items:center;justify-content:space-between;gap:18px}
+  /* header gutters are half the body's — nav sits wider than the content */
+  .nav-in{max-width:none;margin:0;padding:15px max(26px, calc((100% - var(--maxw)) / 4));display:flex;align-items:center;justify-content:space-between;gap:18px}
   .brand{display:flex;align-items:center;gap:11px;font-family:var(--serif);font-weight:600;font-size:21px;letter-spacing:-.01em}
   .brand svg{width:19px;height:22px}
   .nav-links{display:flex;align-items:center;gap:28px}
