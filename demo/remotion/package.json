@@ -1,0 +1,17 @@
+{
+  "name": "meritor-video",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "render": "npm run setup && remotion render src/index.ts Meritor out/meritor.mp4 --browser-executable \"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --codec h264 --crf 18",
+    "studio": "remotion studio src/index.ts",
+    "setup": "node -e \"const fs=require('fs');fs.mkdirSync('public',{recursive:true});['meritor-hero.png','meritor-wordmark-light.png','meritor-canyon.png','meritor-lattice.png'].forEach(f=>fs.copyFileSync('../../web/assets/'+f,'public/'+f))\""
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.376",
+    "@remotion/google-fonts": "^4.0.376",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "remotion": "^4.0.376"
+  }
+}

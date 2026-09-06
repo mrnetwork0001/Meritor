@@ -6,3 +6,5 @@ __pycache__/
 .env
 .DS_Store
 node_modules/
+demo/remotion/out/
+demo/remotion/public/*.png
