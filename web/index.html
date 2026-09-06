@@ -169,8 +169,20 @@
   .close .btn-dark{background:#fff;color:var(--ink);border-color:#fff}
   .close .btn-ghost{color:#fff;border-color:rgba(255,255,255,.6)}
 
-  footer{padding:34px 0 50px;border-top:1px solid var(--line)}
-  .foot-in{max-width:var(--maxw);margin:0 auto;padding:0 26px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center;color:var(--dim);font-size:13px}
+  footer{background:var(--coal);color:var(--coal-ink);padding:66px 0 40px}
+  .foot-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:44px}
+  .foot-brand .logo{display:flex;align-items:center;gap:11px;font-family:var(--serif);font-weight:600;font-size:23px;color:#fff}
+  .foot-brand .logo svg{width:20px;height:23px}
+  .foot-brand p{color:var(--coal-dim);font-family:var(--mono);font-size:12.5px;line-height:1.75;max-width:40ch;margin:20px 0 22px}
+  .foot-social{display:flex;gap:16px}
+  .foot-social a{color:var(--coal-dim);display:inline-flex}
+  .foot-social a:hover{color:#fff}
+  .foot-col h5{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--coal-dim);margin:2px 0 20px;font-weight:500}
+  .foot-col ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px}
+  .foot-col a{color:var(--coal-ink);font-size:14.5px;transition:color .15s}
+  .foot-col a:hover{color:#fff}
+  @media (max-width:860px){.foot-grid{grid-template-columns:1fr 1fr}.foot-brand{grid-column:1/-1}}
+  @media (max-width:520px){.foot-grid{grid-template-columns:1fr}}
   .foot-in .mono{color:var(--mid)}
 </style>
 </head>
@@ -186,7 +198,6 @@
       <a href="#thesis">Thesis</a>
       <a href="#how">How it works</a>
       <a href="#proof">Proof</a>
-      <a class="btn btn-dark" href="/desk">Open the desk</a>
     </div>
   </div>
 </nav>
@@ -363,9 +374,54 @@
 </section>
 
 <footer>
-  <div class="foot-in">
-    <span>Meritor · a load-bearing credit memory for autonomous agents</span>
-    <span class="mono">Sibyl Labs Memory Hackathon · Apache-2.0</span>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <div class="logo">
+          <svg viewBox="0 0 26 30" aria-hidden="true"><path d="M13 1 L24 5 V15 C24 23 19 27 13 29 C7 27 2 23 2 15 V5 Z" fill="none" stroke="#cf9a4e" stroke-width="1.7"/><path d="M8 15 l3.4 3.6 L18 10" fill="none" stroke="#63dbe6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Meritor
+        </div>
+        <p>A load-bearing credit memory for autonomous agents. Recall a counterparty's history, price a collateral tier, and settle on Base - or refuse. Delete the memory and it fails closed.</p>
+        <div class="foot-social">
+          <a href="https://github.com/mrnetwork0001/Meritor" target="_blank" rel="noopener" aria-label="GitHub">
+            <svg width="21" height="21" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.5v-2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.7.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .3.2.6.8.5 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/></svg>
+          </a>
+          <a href="https://base.easscan.org/attestation/view/0x66c791a420a61bcd3d33bf6c8ba8c6fe54b8dcdfe13852c8da7077bfdd9a0e2a" target="_blank" rel="noopener" aria-label="Onchain attestation">
+            <svg width="21" height="21" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.2 2H5.8L2 8.6 12 22 22 8.6 18.2 2zM12 18.6 5.1 9.2h13.8L12 18.6zM6.7 4h10.6l2.1 3.6H4.6L6.7 4z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="foot-col">
+        <h5>Product</h5>
+        <ul>
+          <li><a href="/desk">Open the desk</a></li>
+          <li><a href="#how">How it works</a></li>
+          <li><a href="#test">The deletion test</a></li>
+          <li><a href="#primitives">Memory primitives</a></li>
+        </ul>
+      </div>
+
+      <div class="foot-col">
+        <h5>Onchain</h5>
+        <ul>
+          <li><a href="https://base.easscan.org/attestation/view/0x66c791a420a61bcd3d33bf6c8ba8c6fe54b8dcdfe13852c8da7077bfdd9a0e2a" target="_blank" rel="noopener">EAS attestation</a></li>
+          <li><a href="https://basescan.org/tx/0xfcb465afde7eecb91727fec2c5315560ab374f9fad3ae8873db4ce5b13110f61" target="_blank" rel="noopener">Transaction</a></li>
+          <li><a href="https://basescan.org/address/0xcd1e56694767cb4ab26ca87abcce5e964c41a196" target="_blank" rel="noopener">ERC-8004 #84921</a></li>
+          <li><a href="https://base.org" target="_blank" rel="noopener">Base mainnet</a></li>
+        </ul>
+      </div>
+
+      <div class="foot-col">
+        <h5>Built on</h5>
+        <ul>
+          <li><a href="https://sibyllabs.org" target="_blank" rel="noopener">Sibyl Memory</a></li>
+          <li><a href="https://base.org" target="_blank" rel="noopener">Base</a></li>
+          <li><a href="https://virtuals.io" target="_blank" rel="noopener">Virtuals ACP</a></li>
+          <li><a href="https://github.com/mrnetwork0001/Meritor" target="_blank" rel="noopener">GitHub</a></li>
+        </ul>
+      </div>
+    </div>
   </div>
 </footer>
 
