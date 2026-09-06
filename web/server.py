@@ -1,4 +1,4 @@
-"""Meritor web server — the credit desk, live against the real engine.
+"""Meritor web server - the credit desk, live against the real engine.
 
 This is not a mockup with baked-in numbers. Every figure the frontend shows is
 computed by Meritor's own scoring module over a real Sibyl Memory database, and

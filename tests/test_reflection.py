@@ -1,4 +1,4 @@
-"""Tests for reflection — the consolidation pass that only ever tightens."""
+"""Tests for reflection - the consolidation pass that only ever tightens."""
 
 from datetime import timedelta
 

@@ -1,16 +1,16 @@
-"""EAS attestations on Base — publishing a recalled credit tier onchain.
+"""EAS attestations on Base - publishing a recalled credit tier onchain.
 
-The division of labour is the whole idea. Meritor's *reasoning* — the full
-journal, the decayed score, the evidence behind a tier — is load-bearing and
-private, and it lives in Sibyl Memory. The *result* — "this agent is PLATINUM as
-of now, on this evidence" — is a portable, verifiable claim other agents in the
+The division of labour is the whole idea. Meritor's *reasoning* - the full
+journal, the decayed score, the evidence behind a tier - is load-bearing and
+private, and it lives in Sibyl Memory. The *result* - "this agent is PLATINUM as
+of now, on this evidence" - is a portable, verifiable claim other agents in the
 economy can consume without Meritor's memory or trust. EAS is how that result
 leaves the machine: an onchain attestation on Base, anchored to the memory that
 produced it.
 
 This satisfies the Base partner stack by interacting with EAS's already-deployed
 contract (the Sibyl team confirmed that interacting with a deployed contract
-meets the deployment floor — no need to deploy our own). EAS is an OP-Stack
+meets the deployment floor - no need to deploy our own). EAS is an OP-Stack
 predeploy, so the same addresses serve Base mainnet and Base Sepolia.
 
 Like the settler, this never fabricates an attestation UID. No key, no funding,
@@ -24,7 +24,7 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any
 
-# EAS OP-Stack predeploys — identical on Base mainnet (8453) and Base Sepolia
+# EAS OP-Stack predeploys - identical on Base mainnet (8453) and Base Sepolia
 # (84532). Verified live (code present) and against the official EAS registry.
 EAS_ADDRESS = "0x4200000000000000000000000000000000000021"
 SCHEMA_REGISTRY_ADDRESS = "0x4200000000000000000000000000000000000020"
@@ -199,7 +199,7 @@ class EASAttester:
 
     def connect(self) -> tuple[bool, str]:
         if not self.private_key:
-            return False, "BASE_PRIVATE_KEY is not set — no wallet to attest from."
+            return False, "BASE_PRIVATE_KEY is not set - no wallet to attest from."
         if not self.rpc_url:
             return False, f"no RPC URL for chain {self.chain_id}."
         try:
@@ -288,8 +288,8 @@ class EASAttester:
             return Attestation(
                 status=AttestStatus.DRY_RUN, agent_id=agent_id, score=score, tier=tier,
                 schema_uid=self.schema_uid, chain_id=self.chain_id, payload=payload,
-                detail=(f"DRY RUN — nothing attested onchain. {detail}" if not ok
-                        else "DRY RUN requested — nothing attested onchain."),
+                detail=(f"DRY RUN - nothing attested onchain. {detail}" if not ok
+                        else "DRY RUN requested - nothing attested onchain."),
             )
 
         try:

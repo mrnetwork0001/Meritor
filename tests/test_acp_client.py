@@ -1,4 +1,4 @@
-"""Tests for the Virtuals ACP driver — the credit-event mapping, mock lifecycle."""
+"""Tests for the Virtuals ACP driver - the credit-event mapping, mock lifecycle."""
 
 from meritor.agents.acp_client import ACPClient, JobPhase, JobResult, PHASE_TO_EVENT
 from meritor.domain.models import EventType
@@ -42,7 +42,7 @@ def test_mock_dispatch_completes_and_maps_to_a_credit_event():
 
 
 def test_phase_mapping_is_total():
-    """Every phase must map to an event or explicit None — no KeyError at runtime."""
+    """Every phase must map to an event or explicit None - no KeyError at runtime."""
     for phase in JobPhase:
         assert phase in PHASE_TO_EVENT
 

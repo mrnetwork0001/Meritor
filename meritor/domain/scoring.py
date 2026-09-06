@@ -1,6 +1,6 @@
 """The credit scoring engine.
 
-Pure functions over a CounterpartyProfile. No I/O, no network — which means
+Pure functions over a CounterpartyProfile. No I/O, no network - which means
 every point of a score is reproducible and auditable from the memory record
 alone. That is the point: the score is a *function of recalled memory*, so
 when memory is gone the score is not merely lower, it is undefined.
@@ -26,7 +26,7 @@ W_SLA = 350.0          # Did they finish the work, on time?
 W_REPAYMENT = 300.0    # Did they pay back what they borrowed?
 W_VELOCITY = 100.0     # How fast, relative to the deadline?
 W_DISPUTES = 150.0     # Penalty pool, earned back by a clean record.
-W_MATURITY = 100.0     # Tenure and volume — thin files stay thin.
+W_MATURITY = 100.0     # Tenure and volume - thin files stay thin.
 
 # Half-life for behavioural decay. Good behaviour 90 days ago counts half as
 # much as good behaviour today, so a profile has to stay earned.
@@ -37,7 +37,7 @@ DECAY_HALF_LIFE = timedelta(days=90)
 MIN_EVENTS_FOR_PLATINUM = 4
 
 # Pseudo-observations of failure mixed into every ratio, so a thin file cannot
-# claim a perfect record. Ratios are otherwise decay-invariant — 1/1 scores the
+# claim a perfect record. Ratios are otherwise decay-invariant - 1/1 scores the
 # same whether the observation is an hour or a decade old. Shrinking toward a
 # pessimistic prior with the *decayed* evidence mass as the sample size makes
 # stale evidence and scarce evidence fail the same way, which is correct: both
@@ -118,7 +118,7 @@ def score_profile(profile: CounterpartyProfile, now: datetime | None = None) -> 
     # --- Dispute record --------------------------------------------------
     # Asymmetric on purpose. A dispute resolved against you is hard evidence and
     # is charged at full weight immediately. A *clean* record, by contrast, is
-    # only as meaningful as the volume of dealings behind it — never having been
+    # only as meaningful as the volume of dealings behind it - never having been
     # disputed across two jobs says almost nothing, so the credit earns out with
     # the same evidence mass that drives every other component.
     clean_credit = W_DISPUTES * min(1.0, (jobs + loans) / 6.0)
@@ -128,7 +128,7 @@ def score_profile(profile: CounterpartyProfile, now: datetime | None = None) -> 
     if profile.disputes_against:
         rationale.append(f"{profile.disputes_against} dispute(s) resolved against this agent")
     if profile.disputes_open:
-        rationale.append(f"{profile.disputes_open} dispute(s) currently open — credit frozen")
+        rationale.append(f"{profile.disputes_open} dispute(s) currently open - credit frozen")
 
     # --- Maturity --------------------------------------------------------
     settled_mass = jobs + loans
@@ -215,7 +215,7 @@ def decide(
 ) -> CreditDecision:
     """Turn recalled memory into a lending decision.
 
-    `profile is None` means Sibyl Memory returned nothing for this agent —
+    `profile is None` means Sibyl Memory returned nothing for this agent -
     either a genuinely new counterparty, or the memory layer is gone. Both
     collapse to the same fail-closed outcome: no uncollateralized credit.
     """
@@ -231,7 +231,7 @@ def decide(
             tier=Tier.UNKNOWN,
             score=0.0,
             reason=(
-                "MEMORY UNAVAILABLE — Meritor cannot recall this counterparty's "
+                "MEMORY UNAVAILABLE - Meritor cannot recall this counterparty's "
                 "credit history and has no basis to price risk. Falling back to "
                 "0-trust: uncollateralized credit denied."
             ),
@@ -276,7 +276,7 @@ def decide(
     approved = approved_usdc > 0
 
     if not approved:
-        reason = f"Tier {tier.value} carries a ${ceiling:,.0f} exposure ceiling — request denied."
+        reason = f"Tier {tier.value} carries a ${ceiling:,.0f} exposure ceiling - request denied."
     elif approved_usdc < requested_usdc:
         reason = (
             f"Recalled {breakdown.evidence_events} credit events across "

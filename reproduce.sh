@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Meritor — from a clean clone to the load-bearing proof, in one command.
+# Meritor - from a clean clone to the load-bearing proof, in one command.
 #   ./reproduce.sh
 set -euo pipefail
 cd "$(dirname "$0")"

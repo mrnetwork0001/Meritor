@@ -1,8 +1,8 @@
-"""Virtuals ACP driver — job dispatch as a source of credit events.
+"""Virtuals ACP driver - job dispatch as a source of credit events.
 
 Meritor is a credit layer for an agent economy, and Virtuals ACP is where that
 economy actually transacts. Every ACP job a counterparty completes or fails is a
-data point about its reliability, so ACP is not a bolt-on multiplier here — it is
+data point about its reliability, so ACP is not a bolt-on multiplier here - it is
 where Meritor's SLA history comes from.
 
 The integration is a thin subprocess wrapper around @virtuals-protocol/acp-cli,

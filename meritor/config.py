@@ -24,7 +24,7 @@ MemoryDriver = Literal["sibyl", "local"]
 class Settings:
     # --- Memory (mandatory, load-bearing) --------------------------------
     # Sibyl Memory is a local SQLite substrate, not a hosted API. There is no
-    # key and no endpoint to configure — only where the file lives and which
+    # key and no endpoint to configure - only where the file lives and which
     # tenant partition inside it Meritor owns.
     memory_driver: MemoryDriver
     sibyl_db_path: Path

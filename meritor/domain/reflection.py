@@ -1,4 +1,4 @@
-"""Reflection — consolidating the journal into durable underwriting policy.
+"""Reflection - consolidating the journal into durable underwriting policy.
 
 The point-in-time score answers "how creditworthy is this agent right now?" It
 does not answer "which way are they heading?" A counterparty can hold a high
@@ -15,7 +15,7 @@ Two design commitments:
 2. **Free-tier only.** Sibyl's native `learn()` is gated to paid tier strings the
    hackathon grant does not set (verified in the SDK source), so it would raise
    for us and for a judge re-running the demo. This pass uses only journal reads
-   and reference writes, which every tier has — so the reflection primitive works
+   and reference writes, which every tier has - so the reflection primitive works
    the same for everyone.
 
 Pure functions here; persistence lives in the memory backend.
@@ -115,7 +115,7 @@ def reflect(profile: CounterpartyProfile, now: datetime | None = None) -> Credit
         reasons.append(f"erratic settlement timing (±{volatility_hours:.0f}h)")
 
     if reasons:
-        summary = "Reflection caps credit at " + (tier_cap.value if tier_cap else "—") + ": " + "; ".join(reasons) + "."
+        summary = "Reflection caps credit at " + (tier_cap.value if tier_cap else "-") + ": " + "; ".join(reasons) + "."
     elif trend == "improving":
         summary = "Improving trajectory; no cap applied (reflection never loosens on optimism alone)."
     else:

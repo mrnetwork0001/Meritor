@@ -1,6 +1,6 @@
 """Tests against the real Sibyl Memory driver.
 
-These exercise the actual substrate, not a mock — a fresh MemoryClient is opened
+These exercise the actual substrate, not a mock - a fresh MemoryClient is opened
 per backend instance, so a "recall" genuinely reads back from SQLite the way a
 new process would. This is what a curious judge re-running the demo hits.
 """
@@ -23,7 +23,7 @@ def db(tmp_path):
 
 
 def _fresh(db, tenant="t-test"):
-    """A brand-new backend over the same file — stands in for a fresh process."""
+    """A brand-new backend over the same file - stands in for a fresh process."""
     return SibylMemoryBackend(db_path=db, tenant_id=tenant)
 
 

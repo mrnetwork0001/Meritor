@@ -1,4 +1,4 @@
-"""Tests for the EAS attester — encoding, honest dry-run, no fabricated UID."""
+"""Tests for the EAS attester - encoding, honest dry-run, no fabricated UID."""
 
 from meritor.agents.eas_attester import (
     EASAttester, Attestation, AttestStatus, compute_schema_uid,

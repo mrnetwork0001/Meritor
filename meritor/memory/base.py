@@ -4,7 +4,7 @@ Meritor is designed to fail closed. There is deliberately no graceful
 degradation path around this interface: if the backend cannot be reached,
 callers get an exception, not an empty profile that quietly reads as
 "new counterparty with a clean record". That distinction is the whole
-load-bearing argument — a memory layer you can remove without noticing
+load-bearing argument - a memory layer you can remove without noticing
 was never load-bearing.
 """
 

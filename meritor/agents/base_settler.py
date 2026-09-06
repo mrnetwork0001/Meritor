@@ -1,4 +1,4 @@
-"""Base settlement — where a recalled credit tier becomes money moving.
+"""Base settlement - where a recalled credit tier becomes money moving.
 
 This is the agent that closes the loop. The credit engine turns memory into a
 tier; the settler turns a tier into a USDC disbursement on Base. Without the
@@ -124,7 +124,7 @@ class BaseSettler:
     def connect(self) -> tuple[bool, str]:
         """Best-effort connect. Returns (ok, detail) rather than raising."""
         if not self.private_key:
-            return False, "BASE_PRIVATE_KEY is not set — no wallet to settle from."
+            return False, "BASE_PRIVATE_KEY is not set - no wallet to settle from."
         if not self.rpc_url:
             return False, f"no RPC URL for chain {self.chain_id}."
         if not self.usdc_address:
@@ -185,9 +185,9 @@ class BaseSettler:
                 to_address=to_address,
                 chain_id=self.chain_id,
                 detail=(
-                    f"DRY RUN — no transaction was broadcast. {detail}"
+                    f"DRY RUN - no transaction was broadcast. {detail}"
                     if not ok
-                    else "DRY RUN requested — no transaction was broadcast."
+                    else "DRY RUN requested - no transaction was broadcast."
                 ),
             )
 

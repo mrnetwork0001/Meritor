@@ -1,4 +1,4 @@
-"""Tests for the credit engine — especially the fail-closed guarantees."""
+"""Tests for the credit engine - especially the fail-closed guarantees."""
 
 from datetime import timedelta
 

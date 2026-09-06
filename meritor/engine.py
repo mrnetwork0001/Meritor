@@ -1,4 +1,4 @@
-"""The credit engine facade — where memory becomes an onchain decision.
+"""The credit engine facade - where memory becomes an onchain decision.
 
 A `CreditSession` is deliberately scoped to one process run. Nothing is cached
 between sessions in memory-the-RAM-sense; everything a session knows about a
@@ -21,8 +21,8 @@ from .memory.base import MemoryBackend, MemoryUnavailable
 def new_session_id() -> str:
     """Resolve this run's logical session id.
 
-    A logical session is a unit of the *narrative* — "the agent came back a
-    week later" — not a unit of process lifetime. Several CLI invocations can
+    A logical session is a unit of the *narrative* - "the agent came back a
+    week later" - not a unit of process lifetime. Several CLI invocations can
     belong to one logical session, and one logical session must never be split
     across process boundaries by accident, because `sessions_seen` feeds both
     the maturity score and the cross-session guardrail on uncollateralized
@@ -77,7 +77,7 @@ class CreditSession:
         """Price a credit request against recalled memory.
 
         The only place a MemoryUnavailable is converted into an answer instead
-        of an exception — and the answer is always a rejection.
+        of an exception - and the answer is always a rejection.
         """
         try:
             profile = self.memory.recall(agent_id)

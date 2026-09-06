@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Meritor — the fresh-session recall beat.
+# Meritor - the fresh-session recall beat.
 #
 # Every command below is a SEPARATE process. Nothing survives in RAM between
 # them. Anything Meritor knows in a later block, it learned by reading the
@@ -23,14 +23,14 @@ rm -f "$SIBYL_MEMORY_DB"
 step "SETUP · replay 0xALPHA's prior operating history (backdated, labelled)"
 $PY -m meritor.cli seed "$ALPHA" --sessions 3 --per-session 4
 
-step "STACK · Virtuals ACP — a completed job becomes a credit event"
+step "STACK · Virtuals ACP - a completed job becomes a credit event"
 MERITOR_SESSION_ID=sess_seed $PY -m meritor.cli acp-job "$ALPHA" \
   --offering risk-audit --budget 10 ${ACP_FLAGS:---mock}
 
 step "SESSION A · 0xBETA, never seen before, asks for \$50 uncollateralized"
 MERITOR_SESSION_ID=sess_A $PY -m meritor.cli request "$BETA" 50 || true
 
-step "SESSION A · 0xALPHA asks for the same \$50 — and Base settles it"
+step "SESSION A · 0xALPHA asks for the same \$50 - and Base settles it"
 # --settle releases USDC on Base against the recalled tier. With no funded
 # wallet this prints DRY_RUN (no fabricated hash); fund .env's address on Base
 # Sepolia and set SETTLE_TO to broadcast a real, on-Basescan transaction.
@@ -50,7 +50,7 @@ MERITOR_SESSION_ID=sess_B $PY -m meritor.cli explain "$BETA"
 step "SESSION B · time-travel: what did Meritor know before today?"
 MERITOR_SESSION_ID=sess_B $PY -m meritor.cli as-of "$ALPHA" --days-ago 10
 
-step "STACK · Base — publish 0xALPHA's recalled tier as an EAS attestation"
+step "STACK · Base - publish 0xALPHA's recalled tier as an EAS attestation"
 # --dry-run prints the exact payload; fund .env's wallet and drop --dry-run to
 # broadcast a real attestation viewable on base(-sepolia).easscan.org.
 MERITOR_SESSION_ID=sess_B $PY -m meritor.cli attest "$ALPHA" ${ATTEST_FLAGS:---dry-run}

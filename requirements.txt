@@ -1,5 +1,5 @@
 # Mandatory, load-bearing. Pinned: 0.8.0 shipped 2026-08-31, one day before the
-# build window, with commits still landing after — an unpinned upgrade mid-window
+# build window, with commits still landing after - an unpinned upgrade mid-window
 # could invalidate a recorded demo.
 sibyl-memory-client==0.8.0
 

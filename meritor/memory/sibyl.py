@@ -1,4 +1,4 @@
-"""Sibyl Memory driver — the mandatory, load-bearing substrate.
+"""Sibyl Memory driver - the mandatory, load-bearing substrate.
 
 Sibyl Memory is a local SQLite substrate, not a hosted service: no API key, no
 base URL, no network call on the read or write path. That shapes the design in
@@ -14,7 +14,7 @@ each carries a different part of the credit argument:
              deserialising every record.
   events     an append-only journal of every credit event, which is what makes
              the score reconstructible rather than merely current.
-  state      hot per-deployment state — the collateral policy version in force,
+  state      hot per-deployment state - the collateral policy version in force,
              and live exposure.
   search     FTS5 lexical search across profiles, so an underwriter can ask
              "who else has a dispute on record" without a full table scan.
@@ -78,7 +78,7 @@ class SibylMemoryBackend(MemoryBackend):
     def _guard(self, op: str, fn, *args, **kwargs):
         """Run an SDK call, translating substrate failure into MemoryUnavailable.
 
-        NotFoundError is deliberately *not* translated — "this counterparty has
+        NotFoundError is deliberately *not* translated - "this counterparty has
         no record" and "the memory layer is gone" are different facts, and
         collapsing them is exactly the bug that would make an outage look like
         a clean slate.

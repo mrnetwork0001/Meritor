@@ -216,7 +216,7 @@ def cmd_reflect(args: argparse.Namespace) -> int:
     _banner(session)
     memo = session.reflect(args.agent)
     if memo is None:
-        print(f" no credit memory for {args.agent} — nothing to reflect on.")
+        print(f" no credit memory for {args.agent} - nothing to reflect on.")
         return 2
     print(f" reflection over {memo.consolidated_events} events for {args.agent}\n")
     print(f" trend            : {memo.trend}")
@@ -247,7 +247,7 @@ def cmd_attest(args: argparse.Namespace) -> int:
     _banner(session)
     profile = session.recall(args.agent)
     if profile is None or not profile.events:
-        print(f" no credit memory for {args.agent} — nothing to attest.")
+        print(f" no credit memory for {args.agent} - nothing to attest.")
         return 2
     b = score_profile(profile)
     print(f" attesting: {args.agent} → {b.tier.value} ({b.score:.0f}/1000)\n")
@@ -481,7 +481,7 @@ def main(argv: list[str] | None = None) -> int:
         return args.func(args)
     except MemoryUnavailable as exc:
         print(f"\n MEMORY UNAVAILABLE: {exc}", file=sys.stderr)
-        print(" Meritor fails closed — no credit can be extended.", file=sys.stderr)
+        print(" Meritor fails closed - no credit can be extended.", file=sys.stderr)
         return 3
     except RuntimeError as exc:
         print(f"\n CONFIG ERROR: {exc}", file=sys.stderr)

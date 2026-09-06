@@ -1,7 +1,7 @@
 """A file-backed memory driver for development and CI.
 
 DEVELOPMENT ONLY. This exists so the credit engine can be exercised without
-Sibyl credentials — not as a fallback. Nothing in Meritor ever switches to
+Sibyl credentials - not as a fallback. Nothing in Meritor ever switches to
 this driver automatically; selecting it is an explicit MEMORY_DRIVER=local
 choice, and `Settings.require_sibyl()` blocks it in production.
 

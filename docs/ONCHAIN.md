@@ -1,7 +1,7 @@
 # Live onchain evidence (Base mainnet)
 
 Meritor's Base partner-stack integration, executed live on **Base mainnet
-(chain 8453)**. Every artifact below is independently verifiable — the
+(chain 8453)**. Every artifact below is independently verifiable - the
 attestation is not a claim in a slide, it is a row in EAS on Base.
 
 ## EAS credit-tier attestation
@@ -31,7 +31,7 @@ provenance event, closing the loop: memory → tier → onchain → memory.
 
 ## Why this is the load-bearing part, not decoration
 
-The attested payload — `score=856, tier=PLATINUM` — is a *function of recalled
+The attested payload - `score=856, tier=PLATINUM` - is a *function of recalled
 memory*. Wipe Sibyl Memory and Meritor has no basis to attest anything but
 UNKNOWN. The onchain record is downstream of the memory, never a substitute for
 it. Reproduce with:
@@ -43,7 +43,7 @@ python -m meritor.cli attest 0xALPHA        # broadcasts on the configured chain
 
 Gas: the full register-schema + attest cost ~0.0000034 ETH on Base mainnet.
 
-## Virtuals ACP — a registered on-chain agent
+## Virtuals ACP - a registered on-chain agent
 
 Meritor is registered on the Agent Commerce Protocol as a live, discoverable
 agent, with an on-chain ERC-8004 identity on Base mainnet.
@@ -54,11 +54,11 @@ agent, with an on-chain ERC-8004 identity on Base mainnet.
 | ACP agent id | `01a075bc-bf93-73e3-a1bd-cc0904791ab3` |
 | Agent wallet | `0xcd1e56694767cb4ab26ca87abcce5e964c41a196` |
 | **ERC-8004 identity (Base 8453)** | **agent #84921**, active |
-| Offering | `meritor_credit_report` — memory-backed credit underwriting, 0.05 USDC, SLA 60m |
+| Offering | `meritor_credit_report` - memory-backed credit underwriting, 0.05 USDC, SLA 60m |
 
 The offering is Meritor's own product exposed to the agent economy: give it a
 counterparty and a requested line, it recalls the history and returns a tier,
-score, and collateral ratio — and fails closed to 0-trust if memory is gone.
+score, and collateral ratio - and fails closed to 0-trust if memory is gone.
 
 Reproduce (needs `npx acp configure` + a signer):
 ```bash

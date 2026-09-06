@@ -1,4 +1,4 @@
-# Meritor — reproduce everything a judge needs in one place.
+# Meritor - reproduce everything a judge needs in one place.
 PY ?= .venv/bin/python
 PIP ?= .venv/bin/pip
 
