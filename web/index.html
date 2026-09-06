@@ -22,7 +22,7 @@
     --serif:"Fraunces",Georgia,serif;
     --sans:"IBM Plex Sans",system-ui,-apple-system,sans-serif;
     --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
-    --maxw:1140px;
+    --maxw:1240px;
   }
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
@@ -98,9 +98,7 @@
   .panel{border-radius:16px;overflow:hidden;background:var(--coal);border:1px solid var(--coal-line);
     box-shadow:0 30px 60px -40px rgba(0,0,0,.6)}
   .panel img{width:100%;display:block}
-  .panel--stone{aspect-ratio:1/1;background:
-    radial-gradient(120% 120% at 30% 20%, #efe7d6, #ddccb2 60%, #c9ب59a 100%);}
-  .panel--stone{background:radial-gradient(120% 120% at 30% 20%, #efe7d6, #ddccb2 60%, #cbb59a 100%)}
+  .panel--stone{aspect-ratio:1/1;background:radial-gradient(120% 120% at 30% 20%, #efe7d6, #ddccb2 60%, #cbb59a 100%)}
   .panel--stone .placeholder{aspect-ratio:1/1;display:grid;place-items:center;color:#a68a67;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase}
   /* onchain receipt card (crafted, real data) */
   .receipt{background:var(--coal);border:1px solid var(--coal-line);border-radius:16px;padding:26px;color:var(--coal-ink)}
@@ -206,7 +204,6 @@
     </div>
     <div class="imgframe imgframe--hero">
       <img src="/assets/meritor-hero.png" alt="A classical marble bust of a Sibyl — memory rendered in stone" onerror="this.remove()">
-      <div class="placeholder">the sibyl · memory in marble</div>
     </div>
   </div>
 </header>
@@ -238,8 +235,7 @@
         <div class="tag">entities · events · state</div>
       </div>
       <div class="panel panel--stone">
-        <img src="/assets/meritor-lattice.png" alt="A memory lattice carved in marble" onerror="this.parentElement.classList.add('is-empty');this.remove()">
-        <div class="placeholder">the ledger · records in stone</div>
+        <img src="/assets/meritor-lattice.png" alt="A memory lattice carved in marble" onerror="this.remove()">
       </div>
     </div>
 

@@ -23,7 +23,7 @@
   body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.5;
     -webkit-font-smoothing:antialiased;letter-spacing:.005em}
   a{color:inherit}
-  .wrap{max-width:1200px;margin:0 auto;padding:28px 22px 60px}
+  .wrap{max-width:1280px;margin:0 auto;padding:28px 22px 60px}
   .mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
   .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
 
@@ -33,6 +33,7 @@
   .brand h1{font-family:var(--serif);font-weight:600;font-size:30px;letter-spacing:-.01em;margin:0;
     display:flex;align-items:center;gap:11px}
   .shield{width:26px;height:30px;flex:none}
+  .brand a{display:inline-block;transition:opacity .15s} .brand a:hover{opacity:.72}
   .brand p{margin:6px 0 0;color:var(--mid);font-size:14px;max-width:44ch}
   .chainchip{display:inline-flex;align-items:center;gap:7px;margin-top:10px;font-family:var(--mono);
     font-size:11.5px;color:var(--mid);background:var(--panel);border:1px solid var(--line);
@@ -192,13 +193,15 @@
 <div class="wrap">
   <header>
     <div class="brand">
-      <h1>
-        <svg class="shield" viewBox="0 0 26 30" aria-hidden="true">
-          <path d="M13 1 L24 5 V15 C24 23 19 27 13 29 C7 27 2 23 2 15 V5 Z" fill="none" stroke="#cf9a4e" stroke-width="1.6"/>
-          <path d="M8 15 l3.4 3.6 L18 10" fill="none" stroke="#63dbe6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        Meritor
-      </h1>
+      <a href="/" aria-label="Back to the Meritor home page" style="text-decoration:none;color:inherit">
+        <h1>
+          <svg class="shield" viewBox="0 0 26 30" aria-hidden="true">
+            <path d="M13 1 L24 5 V15 C24 23 19 27 13 29 C7 27 2 23 2 15 V5 Z" fill="none" stroke="#cf9a4e" stroke-width="1.6"/>
+            <path d="M8 15 l3.4 3.6 L18 10" fill="none" stroke="#63dbe6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Meritor
+        </h1>
+      </a>
       <p>A load-bearing credit memory for autonomous agents. Recall a counterparty's history, set a collateral tier, move real money on Base &mdash; or refuse.</p>
       <span class="chainchip"><span class="dot" id="chaindot"></span> Base mainnet &middot; EAS attestation live</span>
       <span class="chainchip" id="liveTag" hidden style="margin-left:8px"><span class="dot" style="background:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)"></span> live engine &middot; real Sibyl DB</span>
