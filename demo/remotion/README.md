@@ -13,3 +13,16 @@ npm run studio        # live preview / edit
 from `web/assets/` by the `setup` script. The rendered `out/` and copied
 `public/*.png` are gitignored; a compressed 720p cut lives at
 `demo/meritor-teaser-720.mp4`.
+
+## Voiceover
+
+`vo-gen.js` generates the narration with ElevenLabs (one clip per beat), then
+ffmpeg places each at its timecode and mixes it onto the render:
+
+```bash
+export ELEVENLABS_API_KEY=...
+node vo-gen.js                       # writes vo/s01..s09.mp3 (~720 characters)
+# then mux with the adelay/amix ffmpeg command (see project notes)
+```
+
+`demo/meritor-teaser-narrated-720.mp4` is the narrated cut.
