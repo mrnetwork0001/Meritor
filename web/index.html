@@ -8,6 +8,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48.png">
+<link rel="apple-touch-icon" href="/assets/favicon-180.png">
 <style>
   :root{
     color-scheme: light;
@@ -50,6 +53,8 @@
   /* header gutters are half the body's - nav sits wider than the content */
   .nav-in{max-width:none;margin:0;padding:15px max(26px, calc((100% - var(--maxw)) / 4));display:flex;align-items:center;justify-content:space-between;gap:18px}
   .brand{display:flex;align-items:center;gap:11px;font-family:var(--serif);font-weight:600;font-size:21px;letter-spacing:-.01em}
+  .brand-logo{height:52px;width:auto;display:block}
+  .foot-logo{height:60px;width:auto;display:block}
   .brand svg{width:19px;height:22px}
   .nav-links{display:flex;align-items:center;gap:28px}
   .nav-links a{font-size:14px;color:var(--mid)}
@@ -190,9 +195,8 @@
 
 <nav>
   <div class="nav-in">
-    <a class="brand" href="#top">
-      <svg viewBox="0 0 26 30" aria-hidden="true"><path d="M13 1 L24 5 V15 C24 23 19 27 13 29 C7 27 2 23 2 15 V5 Z" fill="none" stroke="#33507a" stroke-width="1.7"/><path d="M8 15 l3.4 3.6 L18 10" fill="none" stroke="#9c5a3c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      Meritor
+    <a class="brand" href="#top" aria-label="Meritor home">
+      <img src="/assets/meritor-wordmark.png" alt="Meritor" class="brand-logo">
     </a>
     <div class="nav-links">
       <a href="#thesis">Thesis</a>
@@ -378,8 +382,7 @@
     <div class="foot-grid">
       <div class="foot-brand">
         <div class="logo">
-          <svg viewBox="0 0 26 30" aria-hidden="true"><path d="M13 1 L24 5 V15 C24 23 19 27 13 29 C7 27 2 23 2 15 V5 Z" fill="none" stroke="#cf9a4e" stroke-width="1.7"/><path d="M8 15 l3.4 3.6 L18 10" fill="none" stroke="#63dbe6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          Meritor
+          <img src="/assets/meritor-wordmark-light.png" alt="Meritor" class="foot-logo">
         </div>
         <p>A load-bearing credit memory for autonomous agents. Recall a counterparty's history, price a collateral tier, and settle on Base - or refuse. Delete the memory and it fails closed.</p>
         <div class="foot-social">
